@@ -24,6 +24,7 @@ from templater import (
     whatsapp_href,
     whatsapp_message_info,
 )
+from webs_storage import save_client_web, webs_path_for_excel
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(message)s", datefmt="%H:%M:%S")
@@ -149,6 +150,13 @@ def main() -> None:
                 log.error("  Netlify: %s", e)
                 url = "Pendiente Netlify"
 
+            webs_html = ""
+            if url and "netlify.app" in str(url):
+                try:
+                    webs_html = webs_path_for_excel(save_client_web(lead.name, out))
+                except Exception as e:
+                    log.error("  webs/: %s", e)
+
             wa = (
                 whatsapp_href(lead.phone, whatsapp_message_info(lead.name))
                 if has_whatsapp(lead.phone)
@@ -162,7 +170,7 @@ def main() -> None:
                 lead.city or "Sitges",
                 url,
                 wa,
-                str(out / "index.html"),
+                webs_html or str(out / "index.html"),
                 datetime.now().strftime("%Y-%m-%d %H:%M"),
             ])
             log.info("  ✓ %s", url)

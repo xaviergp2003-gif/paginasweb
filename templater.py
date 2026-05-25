@@ -42,6 +42,38 @@ SALON_STORY = [
     "https://images.unsplash.com/photo-1634449577050-7b27a462bc42?w=800&q=85",
 ]
 
+WATCH_HERO = [
+    "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=1400&q=88",
+    "https://images.unsplash.com/photo-1524593362215-925f3ae4782d?w=1400&q=88",
+    "https://images.unsplash.com/photo-1587836374828-4dbafa94d0b7?w=1400&q=88",
+    "https://images.unsplash.com/photo-1612817159948-7c77f8a5a6f0?w=1400&q=88",
+]
+WATCH_STORY = [
+    "https://images.unsplash.com/photo-1611591437281-460bfbeff6a0?w=800&q=85",
+    "https://images.unsplash.com/photo-1548171915-e79a380a9a0c?w=800&q=85",
+    "https://images.unsplash.com/photo-1622431353536-795eccd21d2b?w=800&q=85",
+]
+
+ESTETICA_HERO = [
+    "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1400&q=88",
+    "https://images.unsplash.com/photo-1515377905743-f9e3f2376c90?w=1400&q=88",
+    "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=1400&q=88",
+    "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1400&q=88",
+]
+ESTETICA_STORY = [
+    "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=800&q=85",
+    "https://images.unsplash.com/photo-1600334089648-4e0a4a8e7c5e?w=800&q=85",
+    "https://images.unsplash.com/photo-1515377905743-f9e3f2376c90?w=800&q=85",
+]
+
+# Modelos disponibles para bases / automatización
+MODELOS_WEB = {
+    "pizzeria": {"plantilla": "index.html", "categoria": "Restaurante / Pizzería"},
+    "peluqueria": {"plantilla": "peluqueria.html", "categoria": "Peluquería"},
+    "relojeria": {"plantilla": "relojeria.html", "categoria": "Relojería / Joyería"},
+    "estetica": {"plantilla": "estetica.html", "categoria": "Centro de estética"},
+}
+
 
 def clean_name(name: str) -> str:
     n = re.sub(r"[\U00010000-\U0010ffff\u2600-\u27BF\uFE0F\u200D]+", "", name).strip()
@@ -85,6 +117,14 @@ def whatsapp_message_cita(name: str) -> str:
     return f"Hola, me gustaría pedir cita en {clean_name(name)}"
 
 
+def whatsapp_message_reloj(name: str) -> str:
+    return f"Hola, me gustaría información sobre relojes y disponibilidad en {clean_name(name)}"
+
+
+def whatsapp_message_estetica(name: str) -> str:
+    return f"Hola, me gustaría reservar un tratamiento en {clean_name(name)}"
+
+
 def salon_hero_image(name: str) -> str:
     i = int(hashlib.md5(name.encode()).hexdigest(), 16) % len(SALON_HERO)
     return SALON_HERO[i]
@@ -93,6 +133,26 @@ def salon_hero_image(name: str) -> str:
 def salon_story_image(name: str) -> str:
     i = int(hashlib.md5((name + "s").encode()).hexdigest(), 16) % len(SALON_STORY)
     return SALON_STORY[i]
+
+
+def watch_hero_image(name: str) -> str:
+    i = int(hashlib.md5(name.encode()).hexdigest(), 16) % len(WATCH_HERO)
+    return WATCH_HERO[i]
+
+
+def watch_story_image(name: str) -> str:
+    i = int(hashlib.md5((name + "w").encode()).hexdigest(), 16) % len(WATCH_STORY)
+    return WATCH_STORY[i]
+
+
+def estetica_hero_image(name: str) -> str:
+    i = int(hashlib.md5(name.encode()).hexdigest(), 16) % len(ESTETICA_HERO)
+    return ESTETICA_HERO[i]
+
+
+def estetica_story_image(name: str) -> str:
+    i = int(hashlib.md5((name + "e").encode()).hexdigest(), 16) % len(ESTETICA_STORY)
+    return ESTETICA_STORY[i]
 
 
 def stars_display(rating: float) -> str:
@@ -273,3 +333,107 @@ def render_peluqueria_landing(*, lead: PlaceLead, copy: dict[str, Any], output_d
     prepare_dist(output_dir)
     logger.info("Landing peluquería: %s", out)
     return out.resolve()
+
+
+def _render_salon_style(
+    *,
+    lead: PlaceLead,
+    copy: dict[str, Any],
+    output_dir: Path,
+    template_name: str,
+    category_default: str,
+    city_default: str,
+    hero_fn,
+    story_fn,
+    wa_hours_msg: str,
+    wa_order_fn,
+) -> Path:
+    import shutil
+    from deployer import prepare_dist
+
+    if output_dir.exists():
+        shutil.rmtree(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    cards = pick_reviews(lead.review_cards) or [
+        ReviewCard("Cliente", "CL", 5, t[:220], "Google") for t in lead.reviews[:4]
+    ]
+    track = cards + cards
+    display = clean_name(lead.name)
+    cat = lead.category or category_default
+    meta = f"{display} — {cat} en {lead.city or city_default}. {copy.get('hero_text', '')[:80]}"[:160]
+
+    env = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=select_autoescape(["html"]))
+    env.filters["truncate_review"] = truncate_review
+
+    html = env.get_template(template_name).render(
+        name=lead.name,
+        name_clean=display,
+        phone=lead.phone or "Consultar",
+        address=lead.address,
+        short_address=short_addr(lead.address),
+        street_label=street_label(lead.address),
+        city=lead.city or city_default,
+        category=cat,
+        tagline=copy.get("tagline", f"{category_default} · {lead.city or city_default}"),
+        hero_em=copy.get("hero_em", ""),
+        hero_text=copy.get("hero_text", ""),
+        about_title=copy.get("about_title", ""),
+        about_extra=copy.get("about_extra", ""),
+        features=copy.get("features", []),
+        services=copy.get("services", []),
+        whatsapp_intro=copy.get("whatsapp_intro", ""),
+        meta_description=meta,
+        rating=round(lead.rating, 1),
+        stars=stars_display(lead.rating),
+        review_count=lead.review_count or len(lead.reviews) * 20,
+        review_cards=cards,
+        carousel_reviews=track,
+        hours_rows=parse_hours(lead.opening_hours),
+        phone_href=phone_href(lead.phone),
+        has_whatsapp=has_whatsapp(lead.phone),
+        whatsapp_href=whatsapp_href(lead.phone, whatsapp_message_info(lead.name)),
+        whatsapp_hours_href=whatsapp_href(lead.phone, wa_hours_msg),
+        whatsapp_order_href=whatsapp_href(lead.phone, wa_order_fn(lead.name)),
+        hero_image_url=hero_fn(lead.name),
+        story_image_url=story_fn(lead.name),
+        map_embed_url=map_embed(lead.address),
+        services_count=len(copy.get("services", [])),
+        review_stars=review_stars,
+        year=__import__("datetime").datetime.now().year,
+    )
+    out = output_dir / "index.html"
+    out.write_text(html, encoding="utf-8")
+    prepare_dist(output_dir)
+    logger.info("Landing %s: %s", template_name, out)
+    return out.resolve()
+
+
+def render_relojeria_landing(*, lead: PlaceLead, copy: dict[str, Any], output_dir: Path) -> Path:
+    return _render_salon_style(
+        lead=lead,
+        copy=copy,
+        output_dir=output_dir,
+        template_name="relojeria.html",
+        category_default="Relojería",
+        city_default="Barcelona",
+        hero_fn=watch_hero_image,
+        story_fn=watch_story_image,
+        wa_hours_msg="Hola, quería pedir cita para visitar la tienda y ver relojes",
+        wa_order_fn=whatsapp_message_reloj,
+    )
+
+
+def render_estetica_landing(*, lead: PlaceLead, copy: dict[str, Any], output_dir: Path) -> Path:
+    return _render_salon_style(
+        lead=lead,
+        copy=copy,
+        output_dir=output_dir,
+        template_name="estetica.html",
+        category_default="Centro de estética",
+        city_default="Barcelona",
+        hero_fn=estetica_hero_image,
+        story_fn=estetica_story_image,
+        wa_hours_msg="Hola, quería reservar una sesión de tratamiento",
+        wa_order_fn=whatsapp_message_estetica,
+    )

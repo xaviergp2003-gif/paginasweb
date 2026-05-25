@@ -18,6 +18,7 @@ from content_ai import generate_copy_peluqueria
 from deployer import deploy_dist
 from scraper import PlaceLead, search_leads
 from templater import DIST_DIR, render_peluqueria_landing
+from webs_storage import save_client_web, webs_path_for_excel
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(message)s", datefmt="%H:%M:%S")
@@ -93,7 +94,8 @@ def main() -> None:
             try:
                 new_url = deploy_dist(dist, netlify_url=str(url).strip())
                 ws.cell(row, 6, new_url)
-                ws.cell(row, 8, str(dist / "index.html"))
+                webs_html = save_client_web(str(name), dist, existing_html=html_path)
+                ws.cell(row, 8, webs_path_for_excel(webs_html))
                 updated += 1
                 log.info("  ✓ %s", new_url)
             except Exception as e:

@@ -1,8 +1,14 @@
 [[headers]]
-  for = "/*.html"
+  for = "/*"
   [headers.values]
     Content-Type = "text/html; charset=UTF-8"
+
 [[headers]]
-  for = "/"
+  for = "/index.html"
   [headers.values]
     Content-Type = "text/html; charset=UTF-8"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
