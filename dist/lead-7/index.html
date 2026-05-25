@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="La Vieja Simona🍕🥟 — Sabor argentino con raíces barcelonesas" />
+  <title>La Vieja Simona🍕🥟 | Pizzería Barcelona</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #f8f5f0;
+      --cream-2: #efe9e0;
+      --olive: #3a5a48;
+      --olive-d: #243830;
+      --gold: #c4a574;
+      --gold-l: #e8d5b5;
+      --text: #1a1a18;
+      --muted: #5e5e58;
+      --wa: #25d366;
+      --r: 1.25rem;
+      --shadow: 0 8px 32px rgba(36, 56, 48, 0.1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+    .serif { font-family: 'Cormorant Garamond', Georgia, serif; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .wrap { max-width: 1140px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* NAV */
+    .nav {
+      position: fixed; inset: 0 0 auto; z-index: 200;
+      background: rgba(248, 245, 240, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(58, 90, 72, 0.08);
+      transition: box-shadow 0.3s;
+    }
+    .nav.scrolled { box-shadow: var(--shadow); }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem; max-width: 1140px; margin: 0 auto;
+    }
+    .logo { font-size: 1.45rem; font-weight: 700; color: var(--olive-d); }
+    .nav-links {
+      display: flex; gap: 2rem; list-style: none;
+      font-size: 0.88rem; font-weight: 500; color: var(--muted);
+    }
+    .nav-links a:hover { color: var(--olive); }
+    .nav-cta { color: var(--olive) !important; font-weight: 600; }
+    .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex; flex-direction: column; position: absolute;
+        top: 100%; left: 0; right: 0; background: var(--cream);
+        padding: 1.5rem; gap: 1rem; border-bottom: 1px solid var(--cream-2);
+      }
+      .menu-btn { display: block; }
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100svh;
+      display: grid; place-items: center;
+      text-align: center;
+      padding: 8rem 1.5rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233a5a48' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+        radial-gradient(ellipse 100% 80% at 50% -20%, rgba(58, 90, 72, 0.18), transparent 55%),
+        linear-gradient(175deg, var(--cream) 30%, var(--cream-2) 100%);
+    }
+    .hero-visual {
+      position: absolute; right: -5%; top: 15%; width: 45%; max-width: 420px;
+      aspect-ratio: 1; border-radius: 50%;
+      background: linear-gradient(135deg, var(--olive) 0%, var(--olive-d) 100%);
+      opacity: 0.07; filter: blur(2px);
+    }
+    @media (max-width: 768px) { .hero-visual { display: none; } }
+    .hero-content { position: relative; z-index: 1; max-width: 720px; }
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--olive);
+      margin-bottom: 1.25rem;
+      padding: 0.4rem 1rem;
+      border: 1px solid rgba(58, 90, 72, 0.2);
+      border-radius: 999px;
+    }
+    .hero h1 {
+      font-size: clamp(2.75rem, 9vw, 4.75rem);
+      font-weight: 700; line-height: 1.05;
+      color: var(--olive-d);
+      margin-bottom: 0.35rem;
+    }
+    .hero .tagline {
+      font-size: clamp(1.3rem, 4vw, 2rem);
+      font-style: italic;
+      color: var(--gold);
+      margin-bottom: 1.25rem;
+    }
+    .hero-desc { color: var(--muted); font-size: 1.08rem; max-width: 560px; margin: 0 auto 2rem; }
+    .btns { display: flex; flex-wrap: wrap; gap: 0.85rem; justify-content: center; margin-bottom: 1.75rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.95rem 1.85rem; border-radius: 999px;
+      font-weight: 600; font-size: 0.92rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover { transform: translateY(-3px); }
+    .btn-wa {
+      background: var(--wa); color: #fff;
+      box-shadow: 0 6px 24px rgba(37, 211, 102, 0.4);
+    }
+    .btn-tel {
+      background: var(--olive); color: #fff;
+      box-shadow: 0 6px 24px rgba(58, 90, 72, 0.35);
+    }
+    .google-badge {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: #fff; padding: 0.55rem 1.35rem;
+      border-radius: 999px; box-shadow: var(--shadow);
+      font-weight: 600; font-size: 0.9rem;
+    }
+    .scroll-ind {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--muted); animation: float 2.5s ease-in-out infinite;
+    }
+    @keyframes float { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+
+    /* SECTIONS */
+    section { padding: 5.5rem 0; }
+    .label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--olive); margin-bottom: 0.6rem;
+    }
+    h2.section-title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700; color: var(--olive-d); line-height: 1.15;
+    }
+    h2.section-title em { font-style: italic; color: var(--gold); font-weight: 500; }
+
+    /* ABOUT */
+    .about-split {
+      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3.5rem;
+      align-items: center; margin-top: 2.5rem;
+    }
+    @media (max-width: 900px) { .about-split { grid-template-columns: 1fr; } }
+    .about-copy p { color: var(--muted); margin-bottom: 1rem; font-size: 1.05rem; }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
+    .chip {
+      background: #fff; padding: 0.45rem 1rem; border-radius: 999px;
+      font-size: 0.78rem; font-weight: 500; color: var(--olive);
+      border: 1px solid rgba(58, 90, 72, 0.12);
+    }
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+    }
+    .stat-box {
+      background: #fff; border-radius: var(--r); padding: 1.75rem 1rem;
+      text-align: center; box-shadow: var(--shadow);
+      border: 1px solid rgba(58, 90, 72, 0.06);
+    }
+    .stat-box strong {
+      display: block; font-size: 2rem; color: var(--olive);
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .stat-box span { font-size: 0.75rem; color: var(--muted); }
+
+    /* FEATURES */
+    .section-white { background: #fff; }
+    .feat-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    @media (max-width: 768px) { .feat-grid { grid-template-columns: 1fr; } }
+    .feat {
+      background: var(--cream); border-radius: var(--r);
+      padding: 2.25rem 1.75rem;
+      border: 1px solid transparent;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .feat:hover { border-color: var(--gold); transform: translateY(-4px); }
+    .feat .ico { font-size: 2.25rem; margin-bottom: 1rem; }
+    .feat h3 { font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--olive-d); }
+    .feat p { font-size: 0.9rem; color: var(--muted); }
+
+    /* HOURS */
+    .hours-wrap {
+      max-width: 440px; margin: 2rem auto 0;
+      background: #fff; border-radius: var(--r);
+      padding: 2rem 2.25rem; box-shadow: var(--shadow);
+    }
+    .hour-line {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.85rem 0; border-bottom: 1px solid var(--cream-2);
+      font-size: 0.92rem;
+    }
+    .hour-line:last-child { border: none; }
+    .badge-open {
+      font-size: 0.72rem; font-weight: 700; color: var(--olive);
+      background: rgba(58, 90, 72, 0.1); padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+    }
+
+    /* REVIEWS */
+    .reviews-top { text-align: center; margin-bottom: 2.5rem; }
+    .big-rating {
+      font-size: 3.5rem; font-family: 'Cormorant Garamond', serif;
+      color: var(--olive); line-height: 1;
+    }
+    .star-gold { color: var(--gold); font-size: 1.35rem; letter-spacing: 3px; }
+    .marquee-mask {
+      overflow: hidden;
+      mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+    }
+    .marquee {
+      display: flex; gap: 1.25rem; width: max-content;
+      animation: marquee 45s linear infinite;
+    }
+    .marquee:hover { animation-play-state: paused; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+    .rcard {
+      flex: 0 0 340px; background: #fff; border-radius: var(--r);
+      padding: 1.75rem; box-shadow: var(--shadow);
+      border: 1px solid rgba(58, 90, 72, 0.05);
+    }
+    .rcard .r-stars { color: var(--gold); font-size: 0.8rem; margin-bottom: 0.85rem; }
+    .rcard q {
+      display: block; font-style: italic; color: var(--muted);
+      font-size: 0.92rem; line-height: 1.55; min-height: 5rem;
+      quotes: """ """";
+    }
+    .r-user { display: flex; align-items: center; gap: 0.85rem; margin-top: 1.25rem; }
+    .r-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--olive), var(--olive-d));
+      color: #fff; font-weight: 700; font-size: 0.85rem;
+      display: grid; place-items: center;
+    }
+    .r-user small { display: block; color: var(--muted); font-size: 0.72rem; }
+
+    /* MAP / LOCATION */
+    .loc-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
+      margin-top: 2.5rem;
+    }
+    @media (max-width: 768px) { .loc-grid { grid-template-columns: 1fr; } }
+    .loc {
+      background: #fff; border-radius: var(--r); padding: 2rem 1.5rem;
+      text-align: center; box-shadow: var(--shadow);
+      transition: transform 0.2s;
+    }
+    .loc:hover { transform: translateY(-3px); }
+    .loc .ico { font-size: 2.25rem; margin-bottom: 0.75rem; }
+    .loc h4 {
+      font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--muted); margin-bottom: 0.5rem;
+    }
+    .loc p { font-weight: 500; color: var(--olive-d); font-size: 0.95rem; }
+
+    /* CTA */
+    .cta {
+      background: linear-gradient(145deg, var(--olive-d) 0%, var(--olive) 50%, #4a7260 100%);
+      color: #fff; text-align: center; padding: 6rem 1.5rem;
+      position: relative; overflow: hidden;
+    }
+    .cta::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 20% 80%, rgba(196, 165, 116, 0.25), transparent 50%);
+    }
+    .cta .wrap { position: relative; z-index: 1; }
+    .cta h2 { color: #fff; }
+    .cta h2 em { color: var(--gold-l); }
+    .cta p { opacity: 0.92; max-width: 480px; margin: 1rem auto 2rem; }
+    .btn-white { background: #fff; color: var(--olive-d); }
+
+    footer {
+      text-align: center; padding: 2rem; font-size: 0.78rem;
+      color: var(--muted); border-top: 1px solid var(--cream-2);
+    }
+
+    /* reveal */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s, transform 0.7s; }
+    .reveal.visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#" class="logo serif">La Vieja Simona🍕🥟</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Menú">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#horarios">Horarios</a></li>
+        <li><a href="#resenas">Reseñas</a></li>
+        <li><a href="#ubicacion">Dónde estamos</a></li>
+        <li><a href="#contacto" class="nav-cta">Contactar</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-visual"></div>
+    <div class="hero-content">
+      <span class="badge">Pizzería · Barcelona · Terraza</span>
+      <h1 class="serif">La Vieja Simona🍕🥟</h1>
+      <p class="tagline serif">Sabor argentino con raíces barcelonesas</p>
+      <p class="hero-desc">En La Vieja Simona nos apasiona llevarte lo mejor de la cocina argentina a tu mesa. Pizzas de masa justa, milanesas jugosas y empanadas caseras que harán que quieras volver una y otra vez. Un rincón acogedor donde cada plato cuenta una historia.</p>
+      <div class="btns">
+        <a href="https://wa.me/34936676599?text=Hola,+información+sobre+La+Vieja+Simona🍕🥟" class="btn btn-wa" target="_blank" rel="noopener">💬 Escribir por WhatsApp</a>
+        <a href="tel:+34936676599" class="btn btn-tel">Llamar ahora →</a>
+      </div>
+      <div class="google-badge">4.3 ⭐ en Google</div>
+    </div>
+    <span class="scroll-ind">Scroll</span>
+  </header>
+
+  <section id="nosotros" class="reveal">
+    <div class="wrap">
+      <p class="label">Quiénes somos</p>
+      <h2 class="section-title serif">Pizzería<br><em>Autenticidad argentina en el corazón de Barcelona</em></h2>
+      <div class="about-split">
+        <div class="about-copy">
+          <p>En La Vieja Simona nos apasiona llevarte lo mejor de la cocina argentina a tu mesa. Pizzas de masa justa, milanesas jugosas y empanadas caseras que harán que quieras volver una y otra vez. Un rincón acogedor donde cada plato cuenta una historia.</p>
+          <p>Personal atento, ambiente tranquilo y productos de calidad que reflejan nuestro compromiso contigo.</p>
+          <div class="chips">
+            <span class="chip">Comer en el local</span><span class="chip">Para llevar</span><span class="chip">Terraza exterior con vistas al parque</span>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-box"><strong>4.3★</strong><span>Valoración Google</span></div>
+          <div class="stat-box"><strong>682+</strong><span>Reseñas reales</span></div>
+          <div class="stat-box"><strong>3</strong><span>Servicios</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="especialidades" class="section-white reveal">
+    <div class="wrap">
+      <p class="label">Por qué elegirnos</p>
+      <h2 class="section-title serif">Lo que nos hace <em>especiales</em></h2>
+      <div class="feat-grid">
+        
+        <article class="feat">
+          <div class="ico">🍕</div>
+          <h3>Pizzas artesanales</h3>
+          <p>Masa del tamaño justo, ingredientes premium y sabor que enamora. Nada que ver con lo convencional.</p>
+        </article>
+        
+        <article class="feat">
+          <div class="ico">🥩</div>
+          <h3>Carnes y milanesas</h3>
+          <p>Cortes seleccionados y preparados con técnica argentina. Cada bocado es una experiencia.</p>
+        </article>
+        
+        <article class="feat">
+          <div class="ico">🌮</div>
+          <h3>Empanadas caseras</h3>
+          <p>Rellenos variados, masa crujiente y ese toque casero que solo se logra con dedicación.</p>
+        </article>
+        
+      </div>
+    </div>
+  </section>
+
+  <section id="horarios" class="reveal">
+    <div class="wrap" style="text-align:center">
+      <p class="label">🍽️ Abierto para ti</p>
+      <h2 class="section-title serif">Horarios</h2>
+      <p style="color:var(--muted);margin-top:0.5rem">Carrer d&#39;Albert Einstein, Barcelona</p>
+      <div class="hours-wrap">
+        
+        <div class="hour-line">
+          <span>lunes: Cerrado</span>
+          <span class="badge-open">Abierto</span>
+        </div>
+        
+        <div class="hour-line">
+          <span>martes: 18:30–23:00</span>
+          <span class="badge-open">Abierto</span>
+        </div>
+        
+        <div class="hour-line">
+          <span>miércoles: 13:00–16:00, 18:30–23:00</span>
+          <span class="badge-open">Abierto</span>
+        </div>
+        
+        <div class="hour-line">
+          <span>jueves: 13:00–16:00, 18:30–23:00</span>
+          <span class="badge-open">Abierto</span>
+        </div>
+        
+        <div class="hour-line">
+          <span>viernes: 13:00–16:00, 18:30–23:30</span>
+          <span class="badge-open">Abierto</span>
+        </div>
+        
+        <div class="hour-line">
+          <span>sábado: 12:00–16:00, 18:30–23:30</span>
+          <span class="badge-open">Abierto</span>
+        </div>
+        
+        <div class="hour-line">
+          <span>domingo: 12:00–16:00, 18:30–23:00</span>
+          <span class="badge-open">Abierto</span>
+        </div>
+        
+      </div>
+      <a href="https://wa.me/34936676599?text=Hola,+información+sobre+La+Vieja+Simona🍕🥟" class="btn btn-wa" style="margin-top:2rem" target="_blank" rel="noopener">Consultar mesa →</a>
+    </div>
+  </section>
+
+  <section id="resenas" class="reveal">
+    <div class="wrap">
+      <div class="reviews-top">
+        <p class="label">Opiniones verificadas</p>
+        <h2 class="section-title serif">Reseñas <em>reales</em></h2>
+        <div class="big-rating">4.3</div>
+        <div class="star-gold">★★★★☆</div>
+        <p style="color:var(--muted);font-size:0.88rem;margin-top:0.35rem">Basado en 682 reseñas en Google</p>
+      </div>
+      <div class="marquee-mask">
+        <div class="marquee">
+          
+          <article class="rcard">
+            <div class="r-stars">★</div>
+            <q>Pedimos comida y llegó después de 2 horas, lo cual ya fue bastante decepcionante.
+El verduras de la ensalada estaban muy blandas y el salat vino sin ningún tipo de aderezo o salsa.
+
+Entiendo que las patatas fritas pueden llegar un poco blan…</q>
+            <div class="r-user">
+              <div class="r-avatar">ME</div>
+              <div>
+                <strong>Marry Em</strong>
+                <small>Hace 6 meses</small>
+              </div>
+            </div>
+          </article>
+          
+          <article class="rcard">
+            <div class="r-stars">★★★★</div>
+            <q>Local pequeño con terraza exterior de ambiente argentino y buena comida.el trato del personal es agradable y el sitio acogedor. Variedad en productos como pizzas,carnes,empanadas y demás. En esta ocasión he degustado las pizzas y están muy …</q>
+            <div class="r-user">
+              <div class="r-avatar">JH</div>
+              <div>
+                <strong>Javier Hernandez</strong>
+                <small>Hace 3 meses</small>
+              </div>
+            </div>
+          </article>
+          
+          <article class="rcard">
+            <div class="r-stars">★★★★★</div>
+            <q>Fui con mi pareja y nos comimos una Milanesa y una Entraña muy rica. El lugar está genial con un parque al lado muy tranquilo. Repetiremos sin duda</q>
+            <div class="r-user">
+              <div class="r-avatar">CF</div>
+              <div>
+                <strong>Cristian Garcia Fernandez</strong>
+                <small>Hace 7 meses</small>
+              </div>
+            </div>
+          </article>
+          
+          <article class="rcard">
+            <div class="r-stars">★</div>
+            <q>La comida está buena, soy cliente bastante habitual sobretodo para domicilio, deja mucho que desear ya que te dicen 45 minutos maximo y más de una vez nos han tardado 2 horas, a mi me da igual esperar pero en casa tenemos un niño pequeño y …</q>
+            <div class="r-user">
+              <div class="r-avatar">C(</div>
+              <div>
+                <strong>ChaKy88 xRp (ChaKy88xRp)</strong>
+                <small>Hace 5 meses</small>
+              </div>
+            </div>
+          </article>
+          
+          <article class="rcard">
+            <div class="r-stars">★★</div>
+            <q>Voy mucho
+Siempre pido lo mismo
+Aún así, los precios varían mucho
+Hay veces que me cobran más, otras menos
+Y yendo el mismo día de la semana ....
+Los precios subieron
+La calidad y cantidad no siempre es la misma.
+Si pedís mayonesa luego de …</q>
+            <div class="r-user">
+              <div class="r-avatar">PT</div>
+              <div>
+                <strong>Pablo torres Torres</strong>
+                <small>Hace 2 meses</small>
+              </div>
+            </div>
+          </article>
+          
+          <article class="rcard">
+            <div class="r-stars">★</div>
+            <q>Pedimos comida y llegó después de 2 horas, lo cual ya fue bastante decepcionante.
+El verduras de la ensalada estaban muy blandas y el salat vino sin ningún tipo de aderezo o salsa.
+
+Entiendo que las patatas fritas pueden llegar un poco blan…</q>
+            <div class="r-user">
+              <div class="r-avatar">ME</div>
+              <div>
+                <strong>Marry Em</strong>
+                <small>Hace 6 meses</small>
+              </div>
+            </div>
+          </article>
+          
+          <article class="rcard">
+            <div class="r-stars">★★★★</div>
+            <q>Local pequeño con terraza exterior de ambiente argentino y buena comida.el trato del personal es agradable y el sitio acogedor. Variedad en productos como pizzas,carnes,empanadas y demás. En esta ocasión he degustado las pizzas y están muy …</q>
+            <div class="r-user">
+              <div class="r-avatar">JH</div>
+              <div>
+                <strong>Javier Hernandez</strong>
+                <small>Hace 3 meses</small>
+              </div>
+            </div>
+          </article>
+          
+          <article class="rcard">
+            <div class="r-stars">★★★★★</div>
+            <q>Fui con mi pareja y nos comimos una Milanesa y una Entraña muy rica. El lugar está genial con un parque al lado muy tranquilo. Repetiremos sin duda</q>
+            <div class="r-user">
+              <div class="r-avatar">CF</div>
+              <div>
+                <strong>Cristian Garcia Fernandez</strong>
+                <small>Hace 7 meses</small>
+              </div>
+            </div>
+          </article>
+          
+          <article class="rcard">
+            <div class="r-stars">★</div>
+            <q>La comida está buena, soy cliente bastante habitual sobretodo para domicilio, deja mucho que desear ya que te dicen 45 minutos maximo y más de una vez nos han tardado 2 horas, a mi me da igual esperar pero en casa tenemos un niño pequeño y …</q>
+            <div class="r-user">
+              <div class="r-avatar">C(</div>
+              <div>
+                <strong>ChaKy88 xRp (ChaKy88xRp)</strong>
+                <small>Hace 5 meses</small>
+              </div>
+            </div>
+          </article>
+          
+          <article class="rcard">
+            <div class="r-stars">★★</div>
+            <q>Voy mucho
+Siempre pido lo mismo
+Aún así, los precios varían mucho
+Hay veces que me cobran más, otras menos
+Y yendo el mismo día de la semana ....
+Los precios subieron
+La calidad y cantidad no siempre es la misma.
+Si pedís mayonesa luego de …</q>
+            <div class="r-user">
+              <div class="r-avatar">PT</div>
+              <div>
+                <strong>Pablo torres Torres</strong>
+                <small>Hace 2 meses</small>
+              </div>
+            </div>
+          </article>
+          
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ubicacion" class="section-white reveal">
+    <div class="wrap" style="text-align:center">
+      <p class="label">Encuéntranos</p>
+      <h2 class="section-title serif">Dónde <em>estamos</em></h2>
+      <div class="loc-grid">
+        <div class="loc">
+          <div class="ico">📍</div>
+          <h4>Dirección</h4>
+          <p>Carrer d&#39;Albert Einstein, 14, 08860 Castelldefels, Barcelona, España</p>
+        </div>
+        <div class="loc">
+          <div class="ico">📞</div>
+          <h4>Teléfono</h4>
+          <p><a href="tel:+34936676599">936 67 65 99</a></p>
+        </div>
+        <div class="loc">
+          <div class="ico">✅</div>
+          <h4>Servicios</h4>
+          <p>Comer en el local · Para llevar · Terraza exterior con vistas al parque</p>
+        </div>
+      </div>
+      <a href="https://www.google.com/maps/search/?api=1&query=Carrer%20d%27Albert%20Einstein%2C%2014%2C%2008860%20Castelldefels%2C%20Barcelona%2C%20Espa%C3%B1a"
+         class="btn btn-tel" style="margin-top:2rem;display:inline-flex" target="_blank" rel="noopener">
+        Ver en Google Maps →
+      </a>
+    </div>
+  </section>
+
+  <section id="contacto" class="cta reveal">
+    <div class="wrap">
+      <h2 class="section-title serif">Hablemos por <em>WhatsApp</em></h2>
+      <p>¿Dudas sobre nuestro menú? Escríbenos por WhatsApp y te ayudamos al instante.</p>
+      <a href="https://wa.me/34936676599?text=Hola,+información+sobre+La+Vieja+Simona🍕🥟" class="btn btn-wa btn-white" target="_blank" rel="noopener">💬 Escribir por WhatsApp</a>
+      <p style="margin-top:2rem;font-size:0.9rem;opacity:0.85">La Vieja Simona🍕🥟 · <a href="tel:+34936676599" style="color:var(--gold-l)">936 67 65 99</a></p>
+    </div>
+  </section>
+
+  <footer>© 2026 La Vieja Simona🍕🥟 · Página de demostración para prospección</footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40));
+    document.getElementById('menuBtn')?.addEventListener('click', () =>
+      document.getElementById('navLinks').classList.toggle('open'));
+    const obs = new IntersectionObserver((es) => {
+      es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

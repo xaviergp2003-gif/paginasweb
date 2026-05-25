@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Barberia Latín Art / Peluqueria Unisex Barber Shop — Peluquería en Barcelona. Cortes precisos, coloraciones vibrantes y cuidados capilares premium. En Barberí" />
+<meta property="og:title" content="Barberia Latín Art / Peluqueria Unisex Barber Shop" />
+<meta property="og:description" content="Barberia Latín Art / Peluqueria Unisex Barber Shop — Peluquería en Barcelona. Cortes precisos, coloraciones vibrantes y cuidados capilares premium. En Barberí" />
+<meta property="og:image" content="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1400&amp;q=88" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>" />
+<title>Barberia Latín Art / Peluqueria Unisex Barber Shop · Peluquería Barcelona</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600;9..144,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff;--surface:#fafafa;--surface-2:#f4f4f5;--elevated:#e4e4e7;
+  --text:#18181b;--muted:#52525b;--dim:#71717a;
+  --accent:#9d4a63;--accent-2:#7a3d52;--accent-glow:rgba(157,74,99,.12);
+  --border:rgba(0,0,0,.08);--shadow:0 4px 24px rgba(0,0,0,.06);
+  --wa:#16a34a;--radius:20px;--radius-sm:12px;
+  --font:'Outfit',system-ui,sans-serif;--serif:'Fraunces',Georgia,serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* grain overlay */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  padding:1.25rem clamp(1.25rem,4vw,3.5rem);
+  display:flex;align-items:center;justify-content:space-between;
+  transition:background .35s,backdrop-filter .35s;
+}
+nav.scrolled{
+  background:rgba(255,255,255,.9);backdrop-filter:blur(16px) saturate(1.4);
+  border-bottom:1px solid var(--border);box-shadow:var(--shadow);
+}
+.nav-logo{
+  font-family:var(--serif);font-size:1.15rem;font-weight:600;
+  color:var(--text);text-decoration:none;letter-spacing:-.02em;
+}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;align-items:center;gap:clamp(1rem,2.5vw,2rem);list-style:none}
+.nav-links a{
+  font-size:.8rem;font-weight:500;color:var(--muted);
+  text-decoration:none;transition:color .2s;
+}
+.nav-links a:hover{color:var(--text)}
+.nav-pill{
+  background:var(--text)!important;color:#fff!important;
+  padding:.55rem 1.25rem!important;border-radius:999px!important;
+  font-weight:600!important;
+}
+.nav-pill:hover{opacity:.92}
+.nav-wa{background:var(--wa)!important;color:#fff!important}
+.nav-toggle{display:none;background:none;border:0;cursor:pointer;padding:.5rem}
+.nav-toggle span{display:block;width:22px;height:2px;background:var(--text);margin:5px 0;border-radius:2px;transition:.3s}
+
+/* HERO — full bleed modern */
+.hero{
+  min-height:100svh;position:relative;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 clamp(1.25rem,4vw,3.5rem) clamp(2.5rem,6vw,4rem);
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:linear-gradient(180deg,rgba(255,255,255,.05) 0%,rgba(255,255,255,.7) 50%,var(--bg) 92%),
+    url('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1400&amp;q=88') center/cover no-repeat;
+  transform:scale(1.02);animation:heroKen 18s ease-in-out infinite alternate;
+}
+@keyframes heroKen{to{transform:scale(1.08)}}
+.hero-glow{
+  position:absolute;top:20%;right:10%;width:min(420px,50vw);height:min(420px,50vw);
+  background:radial-gradient(circle,var(--accent-glow) 0%,transparent 70%);
+  filter:blur(60px);z-index:1;pointer-events:none;
+}
+.hero-content{position:relative;z-index:2;max-width:900px}
+.hero-chip{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.4rem 1rem;border-radius:999px;
+  background:var(--surface);border:1px solid var(--border);
+  font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.5rem;box-shadow:var(--shadow);
+  opacity:0;animation:up .7s .2s forwards;
+}
+.hero-chip::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+.hero-title{
+  font-family:var(--serif);font-size:clamp(2.75rem,8vw,5.5rem);
+  font-weight:700;line-height:1.02;letter-spacing:-.03em;
+  opacity:0;animation:up .8s .35s forwards;
+}
+.hero-title em{font-style:normal;color:var(--accent-2);display:block;font-weight:300;font-size:.55em;margin-top:.15em;letter-spacing:0}
+.hero-desc{
+  margin-top:1.25rem;font-size:clamp(1rem,2vw,1.15rem);line-height:1.65;
+  color:var(--muted);max-width:520px;font-weight:400;
+  opacity:0;animation:up .8s .5s forwards;
+}
+.hero-row{
+  display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-top:2rem;
+  opacity:0;animation:up .8s .65s forwards;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.9rem 1.75rem;border-radius:999px;font-size:.88rem;font-weight:600;
+  text-decoration:none;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s;
+}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--text);color:#fff}
+.btn-primary:hover{box-shadow:0 8px 28px rgba(0,0,0,.12)}
+.btn-ghost{
+  background:#fff;color:var(--text);
+  border:1px solid var(--border);box-shadow:var(--shadow);
+}
+.btn-ghost:hover{background:var(--surface)}
+.btn-wa{background:var(--wa);color:#fff;box-shadow:0 6px 24px rgba(34,197,94,.35)}
+.btn-wa:hover{box-shadow:0 10px 32px rgba(34,197,94,.45)}
+.hero-stats{
+  position:absolute;top:50%;right:clamp(1.25rem,4vw,3.5rem);transform:translateY(-50%);
+  z-index:2;display:flex;flex-direction:column;gap:.75rem;
+}
+.stat-pill{
+  background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:1rem 1.25rem;text-align:center;min-width:100px;box-shadow:var(--shadow);
+}
+.stat-pill strong{display:block;font-family:var(--serif);font-size:1.75rem;font-weight:700;color:var(--accent)}
+.stat-pill span{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--dim)}
+
+@keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+/* SECTIONS */
+.wrap{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,4vw,3.5rem)}
+section{padding:clamp(4rem,10vw,7rem) 0}
+.eyebrow{
+  font-size:.7rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent-2);margin-bottom:.75rem;
+}
+.h2{
+  font-family:var(--serif);font-size:clamp(2rem,5vw,3.25rem);
+  font-weight:600;line-height:1.1;letter-spacing:-.02em;
+}
+.h2 em{font-style:italic;font-weight:300;color:var(--accent-2)}
+
+/* ABOUT — bento */
+.about-grid{
+  display:grid;grid-template-columns:1.1fr .9fr;gap:1.25rem;margin-top:2.5rem;
+}
+.about-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:2rem;overflow:hidden;box-shadow:var(--shadow);
+}
+.about-card p{color:var(--muted);line-height:1.75;margin-top:1rem;font-size:.95rem}
+.about-card p+p{margin-top:.75rem}
+.about-img{
+  border-radius:var(--radius);overflow:hidden;min-height:320px;position:relative;
+}
+.about-img img{width:100%;height:100%;object-fit:cover;display:block;min-height:320px}
+.about-img-badge{
+  position:absolute;bottom:1rem;left:1rem;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(8px);
+  padding:.6rem 1rem;border-radius:999px;font-size:.75rem;font-weight:500;
+  border:1px solid var(--border);color:var(--text);box-shadow:var(--shadow);
+}
+.tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.25rem}
+.tag{
+  font-size:.72rem;font-weight:500;padding:.35rem .85rem;border-radius:999px;
+  background:rgba(157,74,99,.08);color:var(--accent);border:1px solid rgba(157,74,99,.18);
+}
+.bento-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:1.5rem;
+}
+.bento-stat{
+  background:#fff;border-radius:var(--radius-sm);padding:1.25rem;text-align:center;
+  border:1px solid var(--border);
+}
+.bento-stat strong{font-family:var(--serif);font-size:1.5rem;display:block;color:var(--text)}
+.bento-stat span{font-size:.68rem;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+
+/* FEATURES */
+.features-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.5rem;
+}
+.feat-card{
+  background:#fff;border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.75rem;box-shadow:var(--shadow);
+  transition:transform .25s,border-color .25s,box-shadow .25s;
+}
+.feat-card:hover{transform:translateY(-4px);border-color:rgba(157,74,99,.25);box-shadow:0 12px 32px rgba(0,0,0,.08)}
+.feat-icon{font-size:1.75rem;margin-bottom:1rem}
+.feat-card h3{font-size:1rem;font-weight:600;margin-bottom:.5rem}
+.feat-card p{font-size:.85rem;color:var(--muted);line-height:1.6}
+
+/* HOURS */
+.hours-layout{
+  display:grid;grid-template-columns:1fr 1.2fr;gap:2rem;align-items:start;margin-top:2.5rem;
+}
+.hours-card{
+  background:#fff;
+  border:1px solid var(--border);border-radius:var(--radius);padding:2rem;box-shadow:var(--shadow);
+}
+.hours-list{display:flex;flex-direction:column;gap:0}
+.hours-line{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1rem 0;border-bottom:1px solid var(--border);gap:1rem;
+}
+.hours-line:last-child{border-bottom:0}
+.hours-day{font-size:.85rem;color:var(--muted);min-width:100px}
+.hours-time{font-weight:500;font-size:.9rem}
+.badge-open,.badge-closed{
+  font-size:.65rem;font-weight:600;padding:.25rem .65rem;border-radius:999px;text-transform:uppercase;letter-spacing:.05em;
+}
+.badge-open{background:rgba(22,163,74,.12);color:#15803d}
+.badge-closed{background:var(--surface-2);color:var(--dim)}
+.hours-aside{
+  background:var(--surface);border-radius:var(--radius);padding:2.5rem;
+  border:1px solid var(--border);text-align:center;box-shadow:var(--shadow);
+}
+.hours-aside .big{font-size:3rem;display:block;margin-bottom:.5rem}
+.hours-aside p{color:var(--muted);font-size:.9rem;line-height:1.6;margin-top:1rem}
+.wa-inline{margin-top:1.5rem}
+
+/* REVIEWS */
+.reviews-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1.5rem;margin-bottom:2.5rem}
+.rating-block{text-align:right}
+.rating-num{font-family:var(--serif);font-size:4rem;font-weight:700;line-height:1;color:var(--accent)}
+.rating-meta{font-size:.8rem;color:var(--dim);margin-top:.25rem}
+.reviews-marquee{overflow:hidden;margin:0 calc(-1 * clamp(1.25rem,4vw,3.5rem));padding:0 clamp(1.25rem,4vw,3.5rem)}
+.reviews-track{display:flex;gap:1rem;width:max-content;animation:marquee 40s linear infinite}
+.reviews-track:hover{animation-play-state:paused}
+@keyframes marquee{to{transform:translateX(-50%)}}
+.review-card{
+  width:min(340px,85vw);flex-shrink:0;
+  background:#fff;border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.75rem;box-shadow:var(--shadow);
+}
+.review-stars{color:var(--accent);font-size:.85rem;letter-spacing:.15em;margin-bottom:.75rem}
+.review-quote{font-size:.92rem;line-height:1.65;color:var(--muted);margin-bottom:1.25rem}
+.review-user{display:flex;align-items:center;gap:.75rem}
+.review-av{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent-2),var(--accent));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;font-weight:700;color:#fff;
+}
+.review-user strong{font-size:.85rem;display:block}
+.review-user span{font-size:.72rem;color:var(--dim)}
+
+/* LOCATION */
+.loc-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:0;margin-top:2.5rem;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow)}
+.loc-info{background:#fff;padding:clamp(2rem,5vw,3rem)}
+.loc-row{display:flex;gap:1rem;margin-bottom:1.5rem;align-items:flex-start}
+.loc-row:last-child{margin-bottom:0}
+.loc-icon{width:40px;height:40px;border-radius:var(--radius-sm);background:var(--elevated);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem}
+.loc-row h4{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);font-weight:600;margin-bottom:.25rem}
+.loc-row p{font-size:.95rem;line-height:1.5;color:var(--text)}
+.loc-row a{color:var(--accent);text-decoration:none}
+.loc-row a:hover{text-decoration:underline}
+.loc-map{min-height:360px;background:var(--surface-2)}
+.map-embed{width:100%;height:100%;min-height:360px;border:0;filter:grayscale(.15) contrast(1.02)}
+
+/* CTA */
+.cta-box{
+  margin-top:0;text-align:center;
+  background:linear-gradient(135deg,rgba(157,74,99,.06) 0%,var(--surface) 100%);
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:clamp(3rem,8vw,5rem) clamp(1.5rem,4vw,3rem);box-shadow:var(--shadow);
+}
+.cta-box .h2{margin-bottom:1rem}
+.cta-box p{color:var(--muted);max-width:440px;margin:0 auto 2rem;line-height:1.7}
+.cta-actions{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center}
+
+/* FOOTER */
+footer{
+  padding:3rem clamp(1.25rem,4vw,3.5rem) 2rem;
+  border-top:1px solid var(--border);background:var(--surface);
+}
+.footer-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:2rem;padding-bottom:2rem}
+.footer-brand .logo{font-family:var(--serif);font-size:1.35rem;font-weight:600}
+.footer-brand p{font-size:.85rem;color:var(--dim);margin-top:.35rem}
+.footer-copy{text-align:center;font-size:.75rem;color:var(--dim);padding-top:1.5rem}
+
+/* WA FLOAT */
+.wa-float{
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;
+  width:56px;height:56px;border-radius:50%;background:var(--wa);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 32px rgba(34,197,94,.45);
+  transition:transform .2s;
+}
+.wa-float:hover{transform:scale(1.06)}
+.wa-float svg{width:28px;height:28px;fill:#fff}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+
+@media(max-width:900px){
+  .hero-stats{display:none}
+  .about-grid,.hours-layout,.loc-grid,.features-grid{grid-template-columns:1fr}
+  .nav-toggle{display:block}
+  .nav-links{
+    position:fixed;top:0;right:-100%;width:min(300px,85vw);height:100dvh;
+    background:rgba(255,255,255,.98);backdrop-filter:blur(20px);
+    flex-direction:column;align-items:flex-start;padding:5rem 2rem 2rem;
+    gap:1.25rem;border-left:1px solid var(--border);box-shadow:-8px 0 32px rgba(0,0,0,.08);
+    transition:right .35s ease;
+  }
+  .nav-links.open{right:0}
+}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a class="nav-logo" href="#">Barberia Latín Art / Peluqueria Unisex Barber Shop<span>.</span></a>
+  <button class="nav-toggle" id="navToggle" aria-label="Menú"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#nosotros">Salón</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#horarios">Horarios</a></li>
+    <li><a href="#resenas">Reseñas</a></li>
+    <li><a href="#ubicacion">Ubicación</a></li>
+    
+    <li><a href="https://wa.me/34653149210?text=Hola%2C%20he%20visto%20vuestra%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Barberia%20Lat%C3%ADn%20Art%20%2F%20Peluqueria%20Unisex%20Barber%20Shop" target="_blank" rel="noopener" class="nav-pill nav-wa">Reservar</a></li>
+    
+  </ul>
+</nav>
+
+<section class="hero" id="inicio">
+  <div class="hero-bg" role="img" aria-label="Barberia Latín Art / Peluqueria Unisex Barber Shop"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-stats">
+    <div class="stat-pill"><strong>5.0</strong><span>Google</span></div>
+    <div class="stat-pill"><strong>29+</strong><span>Reseñas</span></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-chip">Barbería · Peluquería Unisex · Barcelona · Estilo y Precisión</div>
+    <h1 class="hero-title">Barberia Latín Art / Peluqueria Unisex Barber Shop<em>Barbería y peluquería unisex donde el arte se corta a navaja</em></h1>
+    <p class="hero-desc">Cortes precisos, coloraciones vibrantes y cuidados capilares premium. En Barbería Latín Art combinamos técnica experta con productos de calidad para que luzcas impecable cada día.</p>
+    <div class="hero-row">
+      
+      <a href="https://wa.me/34653149210?text=Hola%2C%20he%20visto%20vuestra%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Barberia%20Lat%C3%ADn%20Art%20%2F%20Peluqueria%20Unisex%20Barber%20Shop" target="_blank" rel="noopener" class="btn btn-wa">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.881 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Reservar por WhatsApp
+      </a>
+      
+      <a href="tel:+34653149210" class="btn btn-ghost">Llamar ahora</a>
+    </div>
+  </div>
+</section>
+
+<section id="nosotros">
+  <div class="wrap reveal">
+    <p class="eyebrow">El salón</p>
+    <h2 class="h2">Peluquería con <em>Tu estilo, nuestra maestría</em></h2>
+    <div class="about-grid">
+      <div class="about-card">
+        <p>Cortes precisos, coloraciones vibrantes y cuidados capilares premium. En Barbería Latín Art combinamos técnica experta con productos de calidad para que luzcas impecable cada día.</p>
+        <p>Un espacio acogedor donde la buena atención y el trabajo bien hecho son nuestras señas de identidad.</p>
+        <div class="tags"><span class="tag">Corte de barbería</span><span class="tag">Corte y peinado mujer</span><span class="tag">Coloración y mechas</span><span class="tag">Manicura y cuidado de uñas</span><span class="tag">Tratamientos capilares</span></div>
+        <div class="bento-stats">
+          <div class="bento-stat"><strong>5.0★</strong><span>Valoración</span></div>
+          <div class="bento-stat"><strong>5</strong><span>Servicios</span></div>
+          <div class="bento-stat"><strong>Barcelona</strong><span>Ubicación</span></div>
+        </div>
+      </div>
+      <div class="about-img">
+        <img src="https://images.unsplash.com/photo-1562322140-8baeececf53d?w=800&amp;q=85" alt="Barberia Latín Art / Peluqueria Unisex Barber Shop" loading="lazy">
+        <span class="about-img-badge">Rambla del Brasil · Barcelona</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="servicios">
+  <div class="wrap reveal">
+    <p class="eyebrow">Experiencia</p>
+    <h2 class="h2">Lo que nos <em>define</em></h2>
+    <div class="features-grid">
+      
+      <article class="feat-card">
+        <div class="feat-icon">✂️</div>
+        <h3>Cortes de Precisión</h3>
+        <p>Barbería y peluquería con técnica experta en cortes clásicos y modernos para hombre y mujer.</p>
+      </article>
+      
+      <article class="feat-card">
+        <div class="feat-icon">🎨</div>
+        <h3>Coloración Premium</h3>
+        <p>Productos de calidad superior para coloraciones vibrantes y tratamientos que cuidan tu cabello.</p>
+      </article>
+      
+      <article class="feat-card">
+        <div class="feat-icon">💅</div>
+        <h3>Manicura Especializada</h3>
+        <p>Cuidado experto de uñas con técnicas profesionales y esmaltes de larga duración.</p>
+      </article>
+      
+    </div>
+  </div>
+</section>
+
+<section id="horarios">
+  <div class="wrap reveal">
+    <p class="eyebrow">Visítanos</p>
+    <h2 class="h2">Horario de <em>cita</em></h2>
+    <div class="hours-layout">
+      <div class="hours-aside">
+        <span class="big">✂️</span>
+        <p><strong style="color:var(--text)">Barberia Latín Art / Peluqueria Unisex Barber Shop</strong><br>Rambla del Brasil</p>
+        
+        <div class="wa-inline">
+          <a href="https://wa.me/34653149210?text=Hola%2C%20quer%C3%ADa%20reservar%20cita%20para%20un%20servicio%20de%20peluquer%C3%ADa" target="_blank" rel="noopener" class="btn btn-wa">Reservar cita</a>
+        </div>
+        
+      </div>
+      <div class="hours-card">
+        
+        <div class="hours-line">
+          <span class="hours-day">lunes</span>
+          <span class="hours-time">9:00–20:00</span>
+          <span class="badge-open">Abierto</span>
+        </div>
+        
+        <div class="hours-line">
+          <span class="hours-day">martes</span>
+          <span class="hours-time">9:00–20:00</span>
+          <span class="badge-open">Abierto</span>
+        </div>
+        
+        <div class="hours-line">
+          <span class="hours-day">miércoles</span>
+          <span class="hours-time">9:00–20:00</span>
+          <span class="badge-open">Abierto</span>
+        </div>
+        
+        <div class="hours-line">
+          <span class="hours-day">jueves</span>
+          <span class="hours-time">9:00–20:00</span>
+          <span class="badge-open">Abierto</span>
+        </div>
+        
+        <div class="hours-line">
+          <span class="hours-day">viernes</span>
+          <span class="hours-time">9:00–20:00</span>
+          <span class="badge-open">Abierto</span>
+        </div>
+        
+        <div class="hours-line">
+          <span class="hours-day">sábado</span>
+          <span class="hours-time">9:00–20:00</span>
+          <span class="badge-open">Abierto</span>
+        </div>
+        
+        <div class="hours-line">
+          <span class="hours-day">domingo</span>
+          <span class="hours-time">10:00–15:00</span>
+          <span class="badge-open">Abierto</span>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="resenas">
+  <div class="wrap">
+    <div class="reviews-head reveal">
+      <div>
+        <p class="eyebrow">Clientes</p>
+        <h2 class="h2">Reseñas <em>reales</em></h2>
+      </div>
+      <div class="rating-block">
+        <div class="rating-num">5.0</div>
+        <div class="rating-meta">★★★★★ · 29 reseñas Google</div>
+      </div>
+    </div>
+    
+    <div class="reviews-marquee reveal">
+      <div class="reviews-track">
+        
+        <article class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-quote">"Manicura especial para un buen cuidado de mis uñas. Agradezco a Rosa por su buena técnica para el cambio de esmalte, por el buen cuidado y trabajo que hace para que mis uñas se mantengan hermosas. 100% Recomendables -…"</p>
+          <div class="review-user">
+            <div class="review-av">MS</div>
+            <div>
+              <strong>Master Services</strong>
+              <span>Hace 2 meses</span>
+            </div>
+          </div>
+        </article>
+        
+        <article class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-quote">"Buena atención, me gusta porque cada vez que vengo es muy satisfactorio. Barbería de buen servicio, buen servicio y precio. Recomiendo esta peluquería."</p>
+          <div class="review-user">
+            <div class="review-av">VA</div>
+            <div>
+              <strong>Vicente Escobar alvarado</strong>
+              <span>Hace 2 meses</span>
+            </div>
+          </div>
+        </article>
+        
+        <article class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-quote">"El servicio de Barberia y manicura lo recomiendo. Volveré seguro"</p>
+          <div class="review-user">
+            <div class="review-av">JT</div>
+            <div>
+              <strong>Jairo Triviño</strong>
+              <span>Hace 2 meses</span>
+            </div>
+          </div>
+        </article>
+        
+        <article class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-quote">"Buena peluqueria. Recomendable 100x100"</p>
+          <div class="review-user">
+            <div class="review-av">MR</div>
+            <div>
+              <strong>Matias Riveros</strong>
+              <span>Hace 2 meses</span>
+            </div>
+          </div>
+        </article>
+        
+        <article class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-quote">"Excelente servicios los trabajadores muy majos"</p>
+          <div class="review-user">
+            <div class="review-av">JP</div>
+            <div>
+              <strong>José Daniel García príncipe</strong>
+              <span>Hace 4 meses</span>
+            </div>
+          </div>
+        </article>
+        
+        <article class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-quote">"Manicura especial para un buen cuidado de mis uñas. Agradezco a Rosa por su buena técnica para el cambio de esmalte, por el buen cuidado y trabajo que hace para que mis uñas se mantengan hermosas. 100% Recomendables -…"</p>
+          <div class="review-user">
+            <div class="review-av">MS</div>
+            <div>
+              <strong>Master Services</strong>
+              <span>Hace 2 meses</span>
+            </div>
+          </div>
+        </article>
+        
+        <article class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-quote">"Buena atención, me gusta porque cada vez que vengo es muy satisfactorio. Barbería de buen servicio, buen servicio y precio. Recomiendo esta peluquería."</p>
+          <div class="review-user">
+            <div class="review-av">VA</div>
+            <div>
+              <strong>Vicente Escobar alvarado</strong>
+              <span>Hace 2 meses</span>
+            </div>
+          </div>
+        </article>
+        
+        <article class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-quote">"El servicio de Barberia y manicura lo recomiendo. Volveré seguro"</p>
+          <div class="review-user">
+            <div class="review-av">JT</div>
+            <div>
+              <strong>Jairo Triviño</strong>
+              <span>Hace 2 meses</span>
+            </div>
+          </div>
+        </article>
+        
+        <article class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-quote">"Buena peluqueria. Recomendable 100x100"</p>
+          <div class="review-user">
+            <div class="review-av">MR</div>
+            <div>
+              <strong>Matias Riveros</strong>
+              <span>Hace 2 meses</span>
+            </div>
+          </div>
+        </article>
+        
+        <article class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-quote">"Excelente servicios los trabajadores muy majos"</p>
+          <div class="review-user">
+            <div class="review-av">JP</div>
+            <div>
+              <strong>José Daniel García príncipe</strong>
+              <span>Hace 4 meses</span>
+            </div>
+          </div>
+        </article>
+        
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+<section id="ubicacion">
+  <div class="wrap reveal">
+    <p class="eyebrow">Encuéntranos</p>
+    <h2 class="h2">Dónde <em>estamos</em></h2>
+    <div class="loc-grid">
+      <div class="loc-info">
+        <div class="loc-row">
+          <div class="loc-icon">📍</div>
+          <div><h4>Dirección</h4><p>Rambla del Brasil, 23, Sants-Montjuïc, 08028 Barcelona, España</p></div>
+        </div>
+        <div class="loc-row">
+          <div class="loc-icon">📞</div>
+          <div><h4>Teléfono</h4><p><a href="tel:+34653149210">653 14 92 10</a></p></div>
+        </div>
+        
+        <div class="loc-row">
+          <div class="loc-icon">💬</div>
+          <div><h4>WhatsApp</h4><p><a href="https://wa.me/34653149210?text=Hola%2C%20he%20visto%20vuestra%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Barberia%20Lat%C3%ADn%20Art%20%2F%20Peluqueria%20Unisex%20Barber%20Shop" target="_blank" rel="noopener">Escríbenos — respuesta rápida</a></p></div>
+        </div>
+        
+        <div class="loc-row">
+          <div class="loc-icon">✦</div>
+          <div><h4>Servicios</h4><p>Corte de barbería · Corte y peinado mujer · Coloración y mechas · Manicura y cuidado de uñas · Tratamientos capilares</p></div>
+        </div>
+      </div>
+      <div class="loc-map">
+        <iframe class="map-embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Rambla%20del%20Brasil%2C%2023%2C%20Sants-Montju%C3%AFc%2C%2008028%20Barcelona%2C%20Espa%C3%B1a&amp;output=embed&amp;z=16" title="Mapa Barberia Latín Art / Peluqueria Unisex Barber Shop"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contacto">
+  <div class="wrap reveal">
+    <div class="cta-box">
+      <p class="eyebrow" style="justify-content:center;text-align:center">Tu nuevo look</p>
+      <h2 class="h2">Reserva en un <em>clic</em></h2>
+      <p>Reserva tu cita por WhatsApp y disfruta de un servicio personalizado con la mejor atención.</p>
+      <div class="cta-actions">
+        
+        <a href="https://wa.me/34653149210?text=Hola%2C%20he%20visto%20vuestra%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Barberia%20Lat%C3%ADn%20Art%20%2F%20Peluqueria%20Unisex%20Barber%20Shop" target="_blank" rel="noopener" class="btn btn-wa">WhatsApp</a>
+        <a href="https://wa.me/34653149210?text=Hola%2C%20me%20gustar%C3%ADa%20pedir%20cita%20en%20Barberia%20Lat%C3%ADn%20Art%20%2F%20Peluqueria%20Unisex%20Barber%20Shop" target="_blank" rel="noopener" class="btn btn-ghost">Pedir cita</a>
+        
+      </div>
+      <p style="margin-top:1.5rem;font-size:.85rem;color:var(--dim)">O llama al <a href="tel:+34653149210" style="color:var(--accent)">653 14 92 10</a></p>
+    </div>
+  </div>
+</section>
+
+
+<a href="https://wa.me/34653149210?text=Hola%2C%20he%20visto%20vuestra%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Barberia%20Lat%C3%ADn%20Art%20%2F%20Peluqueria%20Unisex%20Barber%20Shop" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.881 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo">Barberia Latín Art / Peluqueria Unisex Barber Shop</div>
+      <p>Peluquería · Rambla del Brasil</p>
+    </div>
+    <div style="text-align:right">
+      
+      <a href="https://wa.me/34653149210?text=Hola%2C%20he%20visto%20vuestra%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Barberia%20Lat%C3%ADn%20Art%20%2F%20Peluqueria%20Unisex%20Barber%20Shop" target="_blank" rel="noopener" class="btn btn-wa" style="margin-bottom:.75rem">WhatsApp</a><br>
+      
+      <a href="tel:+34653149210" style="font-size:1.1rem;font-weight:500;color:var(--text);text-decoration:none">653 14 92 10</a>
+    </div>
+  </div>
+  <p class="footer-copy">© 2026 Barberia Latín Art / Peluqueria Unisex Barber Shop · Página de demostración</p>
+</footer>
+
+<script>
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+const t=document.getElementById('navToggle'),l=document.getElementById('navLinks');
+t?.addEventListener('click',()=>l?.classList.toggle('open'));
+l?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>l?.classList.remove('open')));
+</script>
+</body>
+</html>
