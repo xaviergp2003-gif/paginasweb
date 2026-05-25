@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Restaurante Pizzeria Edén — Donde cada pizza es una experiencia, cada detalle cuenta. En Edén elaboramos pizzas caseras con ingredientes de calidad en un ambien" />
+  <meta property="og:title" content="Restaurante Pizzeria Edén" />
+  <meta property="og:description" content="Restaurante Pizzeria Edén — Donde cada pizza es una experiencia, cada detalle cuenta. En Edén elaboramos pizzas caseras con ingredientes de calidad en un ambien" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1565299624946-b28f40a7ca7b?w=1200&amp;q=85" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍕</text></svg>" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restaurante Pizzeria Edén | Pizzería Barcelona</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --cream:#F7F2E8; --cream-dark:#EDE5D0; --charcoal:#1A1714;
+  --charcoal-mid:#2C2820; --terracotta:#C4522A; --terracotta-light:#D4694A;
+  --gold:#B8924A; --gold-light:#D4AA6A; --sage:#6B7C5C; --white:#FDFAF4;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--charcoal);color:var(--cream);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 4rem;display:flex;align-items:center;justify-content:space-between;transition:background .4s,padding .4s}
+nav.scrolled{background:rgba(26,23,20,.96);backdrop-filter:blur(8px);padding:.8rem 4rem;border-bottom:1px solid rgba(184,146,74,.2)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-style:italic;color:var(--gold-light);letter-spacing:.02em;text-decoration:none}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cream);text-decoration:none;opacity:.8;transition:opacity .2s,color .2s}
+.nav-links a:hover{opacity:1;color:var(--gold-light)}
+.nav-cta{background:var(--terracotta);color:var(--white)!important;padding:.5rem 1.4rem!important;border-radius:2px;opacity:1!important;font-weight:500;transition:background .2s!important}
+.nav-cta:hover{background:var(--terracotta-light)!important}
+
+/* HERO */
+.hero{height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 4rem 6rem;position:relative;z-index:2}
+.hero-eyebrow{font-size:.72rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;opacity:0;animation:fadeUp .8s .3s forwards}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3rem,5.5vw,5.5rem);line-height:1;font-weight:900;margin-bottom:1rem;opacity:0;animation:fadeUp .8s .5s forwards}
+.hero-title em{font-style:italic;color:var(--terracotta-light);display:block}
+.hero-subtitle{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;color:rgba(247,242,232,.65);line-height:1.7;max-width:420px;margin-bottom:2.5rem;opacity:0;animation:fadeUp .8s .7s forwards}
+.hero-actions{display:flex;gap:1rem;opacity:0;animation:fadeUp .8s .9s forwards}
+.btn-primary{background:var(--terracotta);color:var(--white);padding:.85rem 2rem;font-family:'DM Sans',sans-serif;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;border:none;cursor:pointer;text-decoration:none;transition:background .2s,transform .2s;display:inline-block}
+.btn-primary:hover{background:var(--terracotta-light);transform:translateY(-2px)}
+.btn-outline{border:1px solid rgba(184,146,74,.5);color:var(--gold-light);padding:.85rem 2rem;font-family:'DM Sans',sans-serif;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;font-weight:400;background:transparent;cursor:pointer;text-decoration:none;transition:border-color .2s,transform .2s;display:inline-block}
+.btn-outline:hover{border-color:var(--gold-light);transform:translateY(-2px)}
+.hero-right{position:relative;overflow:hidden}
+.hero-image-container{position:absolute;inset:0;background-size:cover;background-position:center;animation:slowZoom 20s ease-in-out infinite alternate}
+.hero-badge{position:absolute;bottom:3rem;right:3rem;width:120px;height:120px;border-radius:50%;border:1px solid rgba(184,146,74,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:3;opacity:0;animation:fadeIn 1s 1.2s forwards;background:rgba(26,23,20,.7);backdrop-filter:blur(4px)}
+.hero-badge span:first-child{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold-light);line-height:1}
+.hero-badge span:last-child{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(247,242,232,.5);margin-top:.2rem}
+.hero-scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:fadeIn 1s 1.4s forwards}
+.scroll-text{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(247,242,232,.4)}
+.scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,rgba(184,146,74,.6),transparent);animation:scrollPulse 2s ease-in-out infinite}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slowZoom{from{transform:scale(1)}to{transform:scale(1.08)}}
+@keyframes scrollPulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* SECTION COMMON */
+section{position:relative}
+.section-label{font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
+.section-label::before{content:'';display:block;width:40px;height:1px;background:var(--gold);flex-shrink:0}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,4vw,3.5rem);font-weight:700;line-height:1.1}
+.section-title em{font-style:italic;color:var(--terracotta-light)}
+
+/* NOSOTROS */
+.story{padding:8rem 6rem;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;background:var(--charcoal-mid)}
+.story-text p{font-family:'Cormorant Garamond',serif;font-size:1.2rem;line-height:1.9;color:rgba(247,242,232,.7);margin-top:1.5rem}
+.story-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2.5rem}
+.stat-item{border-left:2px solid var(--terracotta);padding-left:1.2rem}
+.stat-number{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;color:var(--cream);line-height:1}
+.stat-label{font-size:.75rem;letter-spacing:.08em;color:rgba(247,242,232,.5);margin-top:.3rem;text-transform:uppercase}
+.story-image{position:relative}
+.story-img-main{width:100%;height:500px;object-fit:cover;display:block}
+.story-img-label{position:absolute;top:-1rem;right:-1rem;background:var(--terracotta);padding:1rem 1.5rem;font-family:'Playfair Display',serif;font-style:italic;font-size:.95rem;color:var(--white);line-height:1.4}
+.services-list{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem}
+.service-tag{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .8rem;border:1px solid rgba(184,146,74,.35);color:var(--gold)}
+
+/* EXPERIENCIA */
+.experience{padding:6rem 6rem;background:var(--cream);color:var(--charcoal)}
+.exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:3rem;border:1px solid rgba(26,23,20,.1)}
+.exp-item{padding:2.5rem 2rem;border-right:1px solid rgba(26,23,20,.1);transition:background .3s}
+.exp-item:last-child{border-right:none}
+.exp-item:hover{background:rgba(196,82,42,.05)}
+.exp-icon{font-size:2rem;margin-bottom:1rem}
+.exp-item h3{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--charcoal);margin-bottom:.6rem}
+.exp-item p{font-size:.85rem;line-height:1.7;color:rgba(26,23,20,.6)}
+.experience .section-label{color:var(--terracotta)}
+.experience .section-label::before{background:var(--terracotta)}
+.experience .section-title{color:var(--charcoal)}
+
+/* HORARIOS */
+.hours{padding:8rem 6rem;background:var(--charcoal-mid);display:grid;grid-template-columns:1fr 1.2fr;gap:6rem;align-items:center}
+.clock-ring{width:260px;height:260px;border-radius:50%;border:1px solid rgba(184,146,74,.2);margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+.clock-ring::before{content:'';position:absolute;inset:15px;border-radius:50%;border:1px solid rgba(184,146,74,.1)}
+.clock-emoji{font-size:3rem;display:block;margin-bottom:.5rem;text-align:center}
+.clock-open{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sage);margin-bottom:.3rem;text-align:center}
+.clock-category{font-family:'Playfair Display',serif;font-size:1rem;color:var(--cream);font-style:italic;text-align:center}
+.hours-row{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-bottom:1px solid rgba(247,242,232,.08);gap:1rem}
+.hours-day{font-size:.85rem;letter-spacing:.03em;color:rgba(247,242,232,.6);min-width:140px}
+.hours-time{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--cream);flex:1}
+.hours-tag{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .7rem;border-radius:2px;white-space:nowrap}
+.tag-open{background:rgba(107,124,92,.2);color:var(--sage);border:1px solid rgba(107,124,92,.3)}
+.tag-closed{background:rgba(196,82,42,.15);color:var(--terracotta-light);border:1px solid rgba(196,82,42,.2)}
+.hours-title{margin-bottom:2.5rem}
+.wa-box{margin-top:2rem;padding:1.5rem;border:1px solid rgba(184,146,74,.2);background:rgba(184,146,74,.05)}
+.wa-box p{font-size:.85rem;line-height:1.6;color:rgba(247,242,232,.6);margin-bottom:1rem}
+
+/* RESEÑAS */
+.reviews{padding:8rem 6rem;background:var(--charcoal);overflow:hidden}
+.reviews-header{display:grid;grid-template-columns:1fr auto;align-items:flex-end;margin-bottom:4rem}
+.rating-big{font-family:'Playfair Display',serif;font-size:5rem;font-weight:900;color:var(--gold-light);line-height:1}
+.rating-stars{color:var(--gold);font-size:1.2rem;letter-spacing:.1em;margin:.3rem 0}
+.rating-count{font-size:.78rem;color:rgba(247,242,232,.4);letter-spacing:.05em}
+.reviews-track{display:flex;gap:1.5rem;animation:scrollReviews 35s linear infinite;width:max-content}
+.reviews-track:hover{animation-play-state:paused}
+@keyframes scrollReviews{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.review-card{width:360px;flex-shrink:0;background:var(--charcoal-mid);padding:2rem;border-top:2px solid var(--terracotta)}
+.review-stars{color:var(--gold);font-size:.9rem;letter-spacing:.08em;margin-bottom:1rem}
+.review-text{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;line-height:1.7;color:rgba(247,242,232,.8);margin-bottom:1.5rem}
+.review-author{display:flex;align-items:center;gap:.8rem}
+.review-avatar{width:38px;height:38px;border-radius:50%;background:var(--terracotta);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:.85rem;color:var(--white);flex-shrink:0}
+.review-name{font-size:.85rem;font-weight:500;color:var(--cream)}
+.review-meta{font-size:.72rem;color:rgba(247,242,232,.4);margin-top:.1rem}
+
+/* UBICACIÓN */
+.location-section{display:grid;grid-template-columns:1fr 1fr;min-height:480px}
+.location-info{background:var(--terracotta);padding:5rem 4rem;display:flex;flex-direction:column;justify-content:center}
+.location-info .section-label{color:rgba(253,250,244,.7)}
+.location-info .section-label::before{background:rgba(253,250,244,.7)}
+.location-info .section-title{color:var(--white);font-size:2.5rem;margin-bottom:2rem}
+.location-detail{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.5rem}
+.location-detail-icon{font-size:1.2rem;flex-shrink:0;margin-top:.1rem}
+.location-detail-text h4{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(253,250,244,.7);margin-bottom:.3rem;font-weight:400}
+.location-detail-text p{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--white);line-height:1.5}
+.location-map{background:var(--charcoal-mid);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.map-embed{width:100%;height:100%;border:0;filter:grayscale(.3) contrast(1.1)}
+
+/* WHATSAPP CTA */
+.cta-section{padding:6rem 6rem;background:var(--charcoal-mid);text-align:center}
+.cta-section .section-label{justify-content:center}
+.cta-section .section-label::before{display:none}
+.cta-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:700;margin:0 auto 1rem;line-height:1.2}
+.cta-title em{font-style:italic;color:var(--terracotta-light)}
+.cta-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;color:rgba(247,242,232,.55);max-width:460px;margin:0 auto 2.5rem;line-height:1.7}
+.btn-whatsapp,.btn-wa-green{background:#25D366;color:var(--white)!important;padding:1rem 2.5rem;font-family:'DM Sans',sans-serif;font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;border:none;cursor:pointer;text-decoration:none;transition:background .2s,transform .2s,box-shadow .2s;display:inline-flex;align-items:center;gap:.5rem;border-radius:2px;box-shadow:0 4px 20px rgba(37,211,102,.35)}
+.btn-whatsapp:hover,.btn-wa-green:hover{background:#1ebe5c;transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,.45)}
+.hero-actions .btn-wa-green{padding:.85rem 2rem;font-size:.82rem}
+.nav-wa{background:#25D366!important;color:#fff!important;opacity:1!important;padding:.55rem 1.5rem!important;border-radius:2px}
+.nav-wa:hover{background:#1ebe5c!important}
+/* Botón flotante WhatsApp */
+.wa-float{
+  position:fixed;bottom:1.75rem;right:1.75rem;z-index:300;
+  width:60px;height:60px;border-radius:50%;background:#25D366;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 28px rgba(37,211,102,.5);
+  transition:transform .2s,box-shadow .2s;
+  text-decoration:none;
+}
+.wa-float:hover{transform:scale(1.08);box-shadow:0 10px 36px rgba(37,211,102,.6)}
+.wa-float svg{width:32px;height:32px;fill:#fff}
+.wa-float-label{
+  position:absolute;right:70px;top:50%;transform:translateY(-50%);
+  background:#25D366;color:#fff;padding:.45rem .9rem;border-radius:4px;
+  font-size:.72rem;font-weight:600;letter-spacing:.06em;white-space:nowrap;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.wa-float:hover .wa-float-label{opacity:1}
+.wa-chip{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:rgba(37,211,102,.15);color:#25D366;
+  border:1px solid rgba(37,211,102,.35);
+  padding:.35rem .85rem;border-radius:999px;
+  font-size:.75rem;font-weight:600;text-decoration:none;
+  transition:background .2s;
+}
+.wa-chip:hover{background:rgba(37,211,102,.25)}
+.location-wa-link{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.location-wa-link:hover{opacity:.9}
+
+/* FOOTER */
+footer{background:var(--charcoal);padding:3rem 6rem 2rem;border-top:1px solid rgba(184,146,74,.15)}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;padding-bottom:2rem;border-bottom:1px solid rgba(247,242,232,.08)}
+.footer-logo{font-family:'Playfair Display',serif;font-size:1.8rem;font-style:italic;color:var(--gold-light)}
+.footer-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:rgba(247,242,232,.4);margin-top:.3rem}
+.footer-copy{font-size:.78rem;color:rgba(247,242,232,.3);margin-top:1.5rem;text-align:center}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s,transform .7s}
+.reveal.visible{opacity:1;transform:none}
+
+
+.nav-toggle{display:none;background:none;border:none;color:var(--cream);cursor:pointer;padding:.5rem}
+.nav-toggle span{display:block;width:22px;height:2px;background:var(--cream);margin:5px 0;transition:.3s}
+@media(max-width:900px){
+  .nav-toggle{display:block}
+  .nav-links{position:fixed;top:0;right:-100%;width:min(280px,80vw);height:100vh;background:rgba(26,23,20,.98);flex-direction:column;padding:5rem 2rem 2rem;gap:1.5rem;transition:right .35s ease;border-left:1px solid rgba(184,146,74,.2)}
+  .nav-links.open{right:0}
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;height:auto}
+  .hero-left{padding:7rem 2rem 4rem}
+  .hero-right{height:45vw}
+  .hero-image-container{background-size:cover;background-position:center}
+  .story,.hours{grid-template-columns:1fr;padding:5rem 2rem;gap:3rem}
+  .story-img-main{height:300px}
+  .experience{padding:5rem 2rem}
+  .exp-grid{grid-template-columns:1fr}
+  .exp-item{border-right:none;border-bottom:1px solid rgba(26,23,20,.1)}
+  .reviews{padding:5rem 1rem}
+  .location-section{grid-template-columns:1fr}
+  .location-map{height:300px}
+  .cta-section,.reviews{padding:5rem 2rem}
+  nav{padding:1rem 1.5rem}
+  nav.scrolled{padding:.7rem 1.5rem}
+    footer{padding:3rem 2rem 2rem}
+}
+
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a class="nav-logo" href="#">Restaurante Pizzeria Edén</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Menú"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#horarios">Horarios</a></li>
+    <li><a href="#resenas">Reseñas</a></li>
+    <li><a href="#ubicacion">Dónde estamos</a></li>
+    
+    <li><a href="https://wa.me/34642857096?text=Hola%2C%20he%20visto%20vuestra%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Restaurante%20Pizzeria%20Ed%C3%A9n" target="_blank" rel="noopener" class="nav-cta nav-wa">WhatsApp</a></li>
+    
+    
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Pizzería · Barcelona · Hecha con corazón</p>
+    <h1 class="hero-title">Restaurante Pizzeria Edén<br><em>Donde cada pizza es una experiencia, cada detalle cuenta</em></h1>
+    <p class="hero-subtitle">En Edén elaboramos pizzas caseras con ingredientes de calidad en un ambiente acogedor. Servicio rápido, atmósfera premium y precios justos. La pizzería que te enamorará desde el primer bocado.</p>
+    <div class="hero-actions">
+      
+      <a href="https://wa.me/34642857096?text=Hola%2C%20he%20visto%20vuestra%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Restaurante%20Pizzeria%20Ed%C3%A9n" target="_blank" rel="noopener" class="btn-wa-green">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.881 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Escribir por WhatsApp
+      </a>
+      
+      <a href="tel:+34642857096" class="btn-outline">Llamar ahora →</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-image-container" style="background-image:linear-gradient(to right,var(--charcoal) 0%,transparent 30%),url('https://images.unsplash.com/photo-1565299624946-b28f40a7ca7b?w=1200&amp;q=85')"></div>
+    <div class="hero-badge"><span>4.8</span><span>⭐ Google</span></div>
+  </div>
+  <div class="hero-scroll-hint"><span class="scroll-text">Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<section class="story" id="nosotros">
+  <div class="story-text reveal">
+    <p class="section-label">Quiénes somos</p>
+    <h2 class="section-title">Pizzería<br><em>Pizzería hecha con alma</em></h2>
+    <p>En Edén elaboramos pizzas caseras con ingredientes de calidad en un ambiente acogedor. Servicio rápido, atmósfera premium y precios justos. La pizzería que te enamorará desde el primer bocado.</p>
+    <p>Nuestro equipo te atiende con calidez genuina, contando historias mientras disfrutas de comida excepcional en un espacio diseñado para sentirte como en casa.</p>
+    <div class="services-list"><span class="service-tag">Comer en el local</span><span class="service-tag">Para llevar</span><span class="service-tag">Terraza</span><span class="service-tag">Domicilio</span></div>
+    <div class="story-stats">
+      <div class="stat-item"><div class="stat-number">4.8★</div><div class="stat-label">Valoración Google</div></div>
+      <div class="stat-item"><div class="stat-number">5356</div><div class="stat-label">Reseñas reales</div></div>
+      <div class="stat-item"><div class="stat-number">4</div><div class="stat-label">Servicios</div></div>
+    </div>
+  </div>
+  <div class="story-image reveal">
+    <img class="story-img-main" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&amp;q=80" alt="Restaurante Pizzeria Edén" loading="lazy">
+    <div class="story-img-label">Pizzería<br>en Carrer de Provença</div>
+  </div>
+</section>
+
+<section class="experience" id="experiencia">
+  <div class="reveal">
+    <p class="section-label">Por qué elegirnos</p>
+    <h2 class="section-title">Lo que nos hace <em>especiales</em></h2>
+  </div>
+  <div class="exp-grid reveal">
+    
+    <div class="exp-item">
+      <div class="exp-icon">🍕</div>
+      <h3>Pizzas artesanales</h3>
+      <p>Elige entre masa romana o napolitana, con ingredientes abundantes y de primera calidad. Cada pizza es una obra hecha con precisión.</p>
+    </div>
+    
+    <div class="exp-item">
+      <div class="exp-icon">🍮</div>
+      <h3>Postres caseros espectaculares</h3>
+      <p>Nuestro tiramisú y helado de stracciatella son legendarios. Los hacemos nosotros mismos con la misma dedicación que nuestras pizzas.</p>
+    </div>
+    
+    <div class="exp-item">
+      <div class="exp-icon">⚡</div>
+      <h3>Menú mediodía imbatible</h3>
+      <p>Por 15€ tienes primero, segundo, postre y bebida. Relación calidad-precio que no encontrarás en otro lugar del Eixample.</p>
+    </div>
+    
+  </div>
+</section>
+
+<section class="hours" id="horarios">
+  <div class="reveal" style="text-align:center">
+    <div class="clock-ring">
+      <span class="clock-emoji">🍽️</span>
+      <p class="clock-open">Abierto para ti</p>
+      <p class="clock-category">Pizzería</p>
+    </div>
+    <p style="margin-top:2rem;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:rgba(247,242,232,.45);max-width:260px;margin-left:auto;margin-right:auto">Carrer de Provença</p>
+  </div>
+  <div class="reveal">
+    <div class="hours-title">
+      <p class="section-label">Cuándo visitarnos</p>
+      <h2 class="section-title">Horarios</h2>
+    </div>
+    
+    
+    
+    <div class="hours-row">
+      <span class="hours-day">lunes</span>
+      <span class="hours-time">Cerrado</span>
+      <span class="hours-tag tag-closed">Cerrado</span>
+    </div>
+    
+    <div class="hours-row">
+      <span class="hours-day">martes</span>
+      <span class="hours-time">11:00–23:30</span>
+      <span class="hours-tag tag-open">Abierto</span>
+    </div>
+    
+    <div class="hours-row">
+      <span class="hours-day">miércoles</span>
+      <span class="hours-time">11:00–23:30</span>
+      <span class="hours-tag tag-open">Abierto</span>
+    </div>
+    
+    <div class="hours-row">
+      <span class="hours-day">jueves</span>
+      <span class="hours-time">11:00–23:30</span>
+      <span class="hours-tag tag-open">Abierto</span>
+    </div>
+    
+    <div class="hours-row">
+      <span class="hours-day">viernes</span>
+      <span class="hours-time">11:00–23:30</span>
+      <span class="hours-tag tag-open">Abierto</span>
+    </div>
+    
+    <div class="hours-row">
+      <span class="hours-day">sábado</span>
+      <span class="hours-time">11:00–23:30</span>
+      <span class="hours-tag tag-open">Abierto</span>
+    </div>
+    
+    <div class="hours-row">
+      <span class="hours-day">domingo</span>
+      <span class="hours-time">Cerrado</span>
+      <span class="hours-tag tag-closed">Cerrado</span>
+    </div>
+    
+    
+    <div class="wa-box">
+      <p>¿Quieres asegurarte de que tenemos mesa? Escríbenos y te confirmamos en minutos.</p>
+      <a href="https://wa.me/34642857096?text=Hola%2C%20quer%C3%ADa%20consultar%20disponibilidad%20para%20reservar%20mesa" target="_blank" rel="noopener" class="btn-wa-green">💬 Consultar disponibilidad →</a>
+    </div>
+    
+  </div>
+</section>
+
+<section class="reviews" id="resenas">
+  <div class="reviews-header reveal">
+    <div>
+      <p class="section-label">Lo que dicen nuestros clientes</p>
+      <h2 class="section-title">Reseñas <em>reales</em></h2>
+    </div>
+    <div style="text-align:right">
+      <div class="rating-big">4.8</div>
+      <div class="rating-stars">★★★★☆</div>
+      <div class="rating-count">Basado en 5356 reseñas de Google</div>
+    </div>
+  </div>
+  
+  <div style="overflow:hidden;margin:0 -6rem">
+    <div class="reviews-track">
+      
+      <div class="review-card">
+        <div class="review-stars">★★★★</div>
+        <p class="review-text">"Estuvimos cenando en esta pizzería y nos sorprendió la estructura y el decorado del local, horno incluido. El servicio, amable y humano en su trato. Fuimos atendidos en tiempo record. Probamos sus pizzas caseras y nos…"</p>
+        <div class="review-author">
+          <div class="review-avatar">JV</div>
+          <div>
+            <div class="review-name">Jose VS</div>
+            <div class="review-meta">Hace 2 meses</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="review-card">
+        <div class="review-stars">★★★★</div>
+        <p class="review-text">"Desde 2025 tenemos un nuevo rating para clasificar los restaurantes/hoteles que probamos: A: Asombroso. B: Bueno. C: Correcto. D: Decepcionante. E: Estafa. RATING Pizzeria Eden: B+ Restaurante pizzería en pleno centro…"</p>
+        <div class="review-author">
+          <div class="review-avatar">FS</div>
+          <div>
+            <div class="review-name">Francesco Spinoglio</div>
+            <div class="review-meta">Hace 2 meses</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Servicio excelente y rápido. Habíamos reservado por la web. Puedes elegir tipo de masa. Todo exquisito y con ingredientes abundantes y de calidad. Tiramisú espectacular"</p>
+        <div class="review-author">
+          <div class="review-avatar">AM</div>
+          <div>
+            <div class="review-name">Anaïs García Martínez</div>
+            <div class="review-meta">Hace 2 meses</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Nos encantó Edén 😍. Alex nos atendió genial, súper amable, y Vanessa nos contó su forma de trabajar y de ver la vida, ¡una charla muy bonita! Las pizzas están brutales y el sitio tiene un rollo muy acogedor. Se nota…"</p>
+        <div class="review-author">
+          <div class="review-avatar">XA</div>
+          <div>
+            <div class="review-name">Xavii_04</div>
+            <div class="review-meta">Hace 7 meses</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Increíble comida! Y sabéis que es lo mejor? Que es todo casero, está buenísimo y los precios muy aceptables. Si queréis pasar una cena divertida con una comida top, este es vuestro lugar! 🫶🏼✨"</p>
+        <div class="review-author">
+          <div class="review-avatar">MR</div>
+          <div>
+            <div class="review-name">Marilyn Reyna</div>
+            <div class="review-meta">Hace 3 meses</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="review-card">
+        <div class="review-stars">★★★★</div>
+        <p class="review-text">"Estuvimos cenando en esta pizzería y nos sorprendió la estructura y el decorado del local, horno incluido. El servicio, amable y humano en su trato. Fuimos atendidos en tiempo record. Probamos sus pizzas caseras y nos…"</p>
+        <div class="review-author">
+          <div class="review-avatar">JV</div>
+          <div>
+            <div class="review-name">Jose VS</div>
+            <div class="review-meta">Hace 2 meses</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="review-card">
+        <div class="review-stars">★★★★</div>
+        <p class="review-text">"Desde 2025 tenemos un nuevo rating para clasificar los restaurantes/hoteles que probamos: A: Asombroso. B: Bueno. C: Correcto. D: Decepcionante. E: Estafa. RATING Pizzeria Eden: B+ Restaurante pizzería en pleno centro…"</p>
+        <div class="review-author">
+          <div class="review-avatar">FS</div>
+          <div>
+            <div class="review-name">Francesco Spinoglio</div>
+            <div class="review-meta">Hace 2 meses</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Servicio excelente y rápido. Habíamos reservado por la web. Puedes elegir tipo de masa. Todo exquisito y con ingredientes abundantes y de calidad. Tiramisú espectacular"</p>
+        <div class="review-author">
+          <div class="review-avatar">AM</div>
+          <div>
+            <div class="review-name">Anaïs García Martínez</div>
+            <div class="review-meta">Hace 2 meses</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Nos encantó Edén 😍. Alex nos atendió genial, súper amable, y Vanessa nos contó su forma de trabajar y de ver la vida, ¡una charla muy bonita! Las pizzas están brutales y el sitio tiene un rollo muy acogedor. Se nota…"</p>
+        <div class="review-author">
+          <div class="review-avatar">XA</div>
+          <div>
+            <div class="review-name">Xavii_04</div>
+            <div class="review-meta">Hace 7 meses</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Increíble comida! Y sabéis que es lo mejor? Que es todo casero, está buenísimo y los precios muy aceptables. Si queréis pasar una cena divertida con una comida top, este es vuestro lugar! 🫶🏼✨"</p>
+        <div class="review-author">
+          <div class="review-avatar">MR</div>
+          <div>
+            <div class="review-name">Marilyn Reyna</div>
+            <div class="review-meta">Hace 3 meses</div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</section>
+
+<section class="location-section" id="ubicacion">
+  <div class="location-info reveal">
+    <p class="section-label">Encuéntranos</p>
+    <h2 class="section-title">Dónde <em>estamos</em></h2>
+    <div class="location-detail">
+      <span class="location-detail-icon">📍</span>
+      <div class="location-detail-text"><h4>Dirección</h4><p>Carrer de Provença, 332, Eixample, 08037 Barcelona, España</p></div>
+    </div>
+    <div class="location-detail">
+      <span class="location-detail-icon">📞</span>
+      <div class="location-detail-text"><h4>Teléfono</h4><p><a href="tel:+34642857096" style="color:inherit;text-decoration:none">642 85 70 96</a></p></div>
+    </div>
+    
+    <div class="location-detail">
+      <span class="location-detail-icon">💬</span>
+      <div class="location-detail-text">
+        <h4>WhatsApp</h4>
+        <p><a href="https://wa.me/34642857096?text=Hola%2C%20he%20visto%20vuestra%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Restaurante%20Pizzeria%20Ed%C3%A9n" target="_blank" rel="noopener" class="location-wa-link">Escríbenos — te respondemos en minutos</a></p>
+      </div>
+    </div>
+    
+    <div class="location-detail">
+      <span class="location-detail-icon">✅</span>
+      <div class="location-detail-text"><h4>Servicios</h4><p>Comer en el local · Para llevar · Terraza · Domicilio</p></div>
+    </div>
+  </div>
+  <div class="location-map">
+    <iframe class="map-embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Carrer%20de%20Proven%C3%A7a%2C%20332%2C%20Eixample%2C%2008037%20Barcelona%2C%20Espa%C3%B1a&amp;output=embed&amp;z=16" title="Mapa"></iframe>
+  </div>
+</section>
+
+<section class="cta-section" id="contacto">
+  <p class="section-label">¿Listo para visitarnos?</p>
+  <h2 class="cta-title">Hablemos por <em>WhatsApp</em></h2>
+  <p class="cta-sub">¿Preguntas sobre nuestras pizzas o quieres reservar? Escríbenos por WhatsApp y te atenderemos al instante.</p>
+  
+  <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-bottom:1rem">
+    <a href="https://wa.me/34642857096?text=Hola%2C%20he%20visto%20vuestra%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Restaurante%20Pizzeria%20Ed%C3%A9n" target="_blank" rel="noopener" class="btn-whatsapp">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.881 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Escribir por WhatsApp
+    </a>
+    <a href="https://wa.me/34642857096?text=Hola%2C%20me%20gustar%C3%ADa%20hacer%20un%20pedido%20en%20Restaurante%20Pizzeria%20Ed%C3%A9n" target="_blank" rel="noopener" class="btn-outline" style="border-color:rgba(255,255,255,.4);color:var(--cream)">Hacer pedido</a>
+  </div>
+  <p style="font-size:.85rem;opacity:.7">O llama al <a href="tel:+34642857096" style="color:var(--gold-light)">642 85 70 96</a></p>
+  
+</section>
+
+
+<a href="https://wa.me/34642857096?text=Hola%2C%20he%20visto%20vuestra%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Restaurante%20Pizzeria%20Ed%C3%A9n" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <span class="wa-float-label">¿Hablamos?</span>
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.881 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">Restaurante Pizzeria Edén</div>
+      <div class="footer-tagline">Pizzería · Carrer de Provença</div>
+    </div>
+    <div style="text-align:right">
+      
+      <a href="https://wa.me/34642857096?text=Hola%2C%20he%20visto%20vuestra%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Restaurante%20Pizzeria%20Ed%C3%A9n" target="_blank" rel="noopener" class="wa-chip" style="margin-bottom:.75rem">💬 WhatsApp</a><br>
+      
+      <div style="font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem">Teléfono</div>
+      <a href="tel:+34642857096" style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-style:italic;color:var(--cream);text-decoration:none">642 85 70 96</a>
+    </div>
+  </div>
+  <p class="footer-copy">© 2026 Restaurante Pizzeria Edén · Página web de demostración</p>
+</footer>
+
+<script>
+const nav = document.getElementById('navbar');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle?.addEventListener('click', () => navLinks?.classList.toggle('open'));
+navLinks?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks?.classList.remove('open')));
+
+</script>
+</body>
+</html>

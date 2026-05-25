@@ -1,13 +1,11 @@
 """
-Peluquerías sin web en Sitges → landing salón → Netlify → hoja Excel nueva.
-No modifica la hoja de Pizzerías.
+Peluquerías sin web en Sitges → landing → GitHub Pages → hoja Excel.
 """
 
 from __future__ import annotations
 
 import logging
 import re
-import time
 from datetime import datetime
 from pathlib import Path
 
@@ -15,7 +13,7 @@ from dotenv import load_dotenv
 from openpyxl import load_workbook
 
 from content_ai import generate_copy_peluqueria
-from deployer import deploy_dist
+from github_pages import deploy_github_pages
 from scraper import PlaceLead, search_leads
 from templater import (
     DIST_DIR,
@@ -39,7 +37,7 @@ HEADERS = [
     "Teléfono",
     "Dirección",
     "Ciudad",
-    "URL Web (Netlify)",
+    "URL Web (GitHub)",
     "Enlace WhatsApp",
     "HTML local",
     "Generado",
@@ -54,9 +52,7 @@ QUERIES = [
 ]
 
 MAX_LEADS = 10
-PAUSA = 22
 
-# Excluir negocios que no son peluquería
 SKIP_NAME = re.compile(
     r"restaurante|pizzer|hotel|farmacia|supermerc|gimnasio|dentista|veterinar|"
     r"abogad|inmobiliar|taller|mecánic|ferreter",
@@ -84,10 +80,6 @@ def _append_sheet(rows: list[list]) -> None:
         start = ws.max_row + 1
     else:
         ws = wb.create_sheet(SHEET_PELU)
-        for s in wb.sheetnames:
-            if s != SHEET_PELU:
-                wb[s].sheet_view.tabSelected = False
-        ws.sheet_view.tabSelected = True
         ws.append(HEADERS)
         start = 2
     for i, row in enumerate(rows):
@@ -144,18 +136,15 @@ def main() -> None:
                 log.error("  HTML: %s", e)
                 continue
 
-            try:
-                url = deploy_dist(out, site_name=f"peluqueria-{lead.name}")
-            except Exception as e:
-                log.error("  Netlify: %s", e)
-                url = "Pendiente Netlify"
-
+            url = ""
             webs_html = ""
-            if url and "netlify.app" in str(url):
-                try:
-                    webs_html = webs_path_for_excel(save_client_web(lead.name, out))
-                except Exception as e:
-                    log.error("  webs/: %s", e)
+            try:
+                saved = save_client_web(lead.name, out)
+                url = deploy_github_pages(saved.parent, lead.name)
+                webs_html = webs_path_for_excel(saved)
+            except Exception as e:
+                log.error("  GitHub: %s", e)
+                webs_html = str(out / "index.html")
 
             wa = (
                 whatsapp_href(lead.phone, whatsapp_message_info(lead.name))
@@ -168,21 +157,16 @@ def main() -> None:
                 lead.phone or "—",
                 lead.address,
                 lead.city or "Sitges",
-                url,
+                url.rstrip("/") if url else "",
                 wa,
-                webs_html or str(out / "index.html"),
+                webs_html,
                 datetime.now().strftime("%Y-%m-%d %H:%M"),
             ])
-            log.info("  ✓ %s", url)
-            if len(results) < MAX_LEADS:
-                time.sleep(PAUSA)
+            log.info("  ✓ %s", url or webs_html)
 
     if results:
         _append_sheet(results)
-
-    log.info("=== FIN: %d peluquerías → hoja '%s' ===", len(results), SHEET_PELU)
-    for r in results:
-        log.info("  • %s → %s", r[1], r[5])
+    log.info("=== FIN: %d peluquerías ===", len(results))
 
 
 if __name__ == "__main__":

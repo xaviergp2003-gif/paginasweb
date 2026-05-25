@@ -1,13 +1,11 @@
 """
-Busca más pizzerías sin web, genera landing, sube a Netlify y actualiza Excel.
-Mantiene leads existentes con URL Netlify y añade filas nuevas.
+Busca más pizzerías sin web, genera landing, publica en GitHub Pages y actualiza Excel.
 """
 
 from __future__ import annotations
 
 import logging
 import re
-import time
 from datetime import datetime
 from pathlib import Path
 
@@ -15,7 +13,7 @@ from dotenv import load_dotenv
 from openpyxl import Workbook, load_workbook
 
 from content_ai import generate_copy
-from deployer import deploy_dist
+from github_pages import GITHUB_RE, deploy_github_pages
 from scraper import PlaceLead, search_leads
 from templater import (
     DIST_DIR,
@@ -38,7 +36,7 @@ HEADERS = [
     "Teléfono",
     "Dirección",
     "Ciudad",
-    "URL Web (Netlify)",
+    "URL Web (GitHub)",
     "Enlace WhatsApp",
     "HTML local",
     "Generado",
@@ -67,16 +65,22 @@ QUERIES = [
     "Pizzerías en Premià de Mar",
 ]
 
-NETLIFY_RE = re.compile(r"https?://[a-z0-9-]+\.netlify\.app", re.I)
 MAX_NUEVOS = 15
-PAUSA_NETLIFY = 22
+
+
+def _demo_url_from_vals(vals: list) -> str:
+    for v in vals:
+        s = str(v or "")
+        if GITHUB_RE.search(s) or s.startswith("http"):
+            return s.strip().rstrip("/")
+    return ""
 
 
 def _load_existing() -> tuple[list[list], set[str]]:
     if not XLSX.exists():
         return [], set()
     wb = load_workbook(XLSX)
-    ws = wb.active
+    ws = wb["Pizzerías"] if "Pizzerías" in wb.sheetnames else wb.active
     rows: list[list] = []
     names: set[str] = set()
     for r in range(2, ws.max_row + 1):
@@ -84,19 +88,21 @@ def _load_existing() -> tuple[list[list], set[str]]:
         nombre = str(vals[1] or "").strip()
         if not nombre or nombre in HEADERS or re.fullmatch(r"[\d\s+()-]+", nombre):
             continue
-        url = wa = html = ts = ""
+        url = _demo_url_from_vals(vals)
+        html = ""
         for v in vals:
             s = str(v or "")
-            if not url and NETLIFY_RE.search(s):
-                url = NETLIFY_RE.search(s).group(0)
+            if "webs/" in s or "dist/" in s:
+                html = s
+        if not url and not html:
+            continue
+        wa = ts = ""
+        for v in vals:
+            s = str(v or "")
             if "wa.me" in s:
                 wa = s
-            if "dist/" in s or "webs/" in s:
-                html = s
             if "2026-" in s and len(s) >= 10:
                 ts = s
-        if not url:
-            continue
         ciudad = vals[4] if vals[4] and not str(vals[4]).startswith("http") else ""
         rows.append([vals[0] or "", nombre, vals[2] or "", vals[3] or "", ciudad, url, wa, html, ts])
         names.add(nombre.lower())
@@ -104,19 +110,12 @@ def _load_existing() -> tuple[list[list], set[str]]:
 
 
 def _normalize_row(row: list) -> list:
-    """Asegura 9 columnas alineadas con HEADERS."""
     while len(row) < 9:
         row.append("")
     zona, nombre, tel, dir_, ciudad, url = row[0], row[1], row[2], row[3], row[4], row[5]
     wa, html, ts = row[6], row[7], row[8]
-    if url and NETLIFY_RE.search(str(url)):
-        pass
-    else:
-        for i, v in enumerate(row):
-            m = NETLIFY_RE.search(str(v or ""))
-            if m:
-                url = m.group(0)
-                break
+    if not url:
+        url = _demo_url_from_vals(row)
     if wa and "wa.me" not in str(wa):
         for v in row:
             if v and "wa.me" in str(v):
@@ -139,15 +138,11 @@ def _process(lead: PlaceLead, query: str, idx: int) -> list | None:
         log.error("  HTML: %s", e)
         return None
     try:
-        url = deploy_dist(out, site_name=lead.name)
+        webs_html = save_client_web(lead.name, out)
+        url = deploy_github_pages(webs_html.parent, lead.name)
         log.info("  ✓ %s", url)
     except Exception as e:
-        log.error("  Netlify: %s", e)
-        return None
-    try:
-        webs_html = save_client_web(lead.name, out)
-    except Exception as e:
-        log.error("  webs/: %s", e)
+        log.error("  GitHub: %s", e)
         return None
     wa = whatsapp_href(lead.phone, whatsapp_message_info(lead.name)) if has_whatsapp(lead.phone) else ""
     return [
@@ -156,7 +151,7 @@ def _process(lead: PlaceLead, query: str, idx: int) -> list | None:
         lead.phone or "—",
         lead.address,
         lead.city,
-        url,
+        url.rstrip("/"),
         wa,
         webs_path_for_excel(webs_html),
         datetime.now().strftime("%Y-%m-%d %H:%M"),
@@ -166,7 +161,7 @@ def _process(lead: PlaceLead, query: str, idx: int) -> list | None:
 def main() -> None:
     clean_rows, seen_names = _load_existing()
     clean_rows = [_normalize_row(r) for r in clean_rows]
-    log.info("Excel: %d leads con Netlify existentes", len(clean_rows))
+    log.info("Excel: %d leads existentes", len(clean_rows))
 
     seen_ids: set[str] = set()
     nuevos: list[list] = []
@@ -193,12 +188,10 @@ def main() -> None:
             row = _process(lead, query, deploy_i)
             if row:
                 nuevos.append(row)
-            if deploy_i > 0 and len(nuevos) < MAX_NUEVOS:
-                time.sleep(PAUSA_NETLIFY)
 
     wb = Workbook()
     ws = wb.active
-    ws.title = "Pizzerías sin web"
+    ws.title = "Pizzerías"
     ws.append(HEADERS)
     for row in clean_rows + nuevos:
         ws.append(_normalize_row(row)[:9])

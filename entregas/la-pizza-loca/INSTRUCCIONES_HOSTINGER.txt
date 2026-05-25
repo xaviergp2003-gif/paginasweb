@@ -1,0 +1,14 @@
+INSTRUCCIONES — Subir la web a Hostinger
+============================================
+
+1. Entra en hPanel de Hostinger → Archivos → Administrador de archivos.
+2. Abre la carpeta public_html de tu dominio.
+3. Sube el archivo index.html de este ZIP (sustituye el que haya si existe).
+4. Abre tu dominio en el navegador y comprueba que se ve la página.
+
+Notas:
+- Esta maqueta es una propuesta de diseño. Puedes pedir cambios de textos o fotos.
+- El enlace de demo (GitHub Pages) es temporal; en producción usarás tu dominio.
+- Si no te interesa el proyecto, no hace falta subir nada: cierra la conversación.
+
+Soporte: responde al WhatsApp desde el que recibiste este enlace.

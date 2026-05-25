@@ -1,6 +1,6 @@
 """
-Procesa leads en orden: Netlify + carpeta webs/ + negrita en Excel.
-Ritmo: 3 cada 2 minutos, hasta 90 completados (reanudable).
+Procesa leads en orden: GitHub Pages + carpeta webs/ + negrita en Excel.
+Hasta 90 completados (reanudable).
 """
 
 from __future__ import annotations
@@ -9,16 +9,15 @@ import json
 import logging
 import re
 import sys
-import time
 from datetime import datetime
 from pathlib import Path
 
 from dotenv import load_dotenv
 from openpyxl import load_workbook
 from openpyxl.styles import Font
+from openpyxl.worksheet.hyperlink import Hyperlink
 
-from deployer import deploy_dist
-from netlify_verify import verify_published
+from github_pages import GITHUB_RE, deploy_github_pages
 from webs_storage import save_client_web, webs_path_for_excel
 
 ROOT = Path(__file__).resolve().parent
@@ -26,11 +25,8 @@ XLSX = ROOT / "leads_generados.xlsx"
 STATE_FILE = ROOT / ".proceso_lote.json"
 DIST_DIR = ROOT / "dist"
 
-BATCH_SIZE = 3
-PAUSA_ENTRE_LOTES = 120  # 2 minutos entre lotes de 3
-PAUSA_ENTRE_DEPLOYS = 40  # máx ~3 deploys/min (límite Netlify)
+BATCH_SIZE = 10
 META_TOTAL = 90
-NETLIFY_RE = re.compile(r"https?://[a-z0-9-]+\.netlify\.app", re.I)
 DIST_PAT = re.compile(r"(redeploy-\d+|lead-new-\d+|pelu-sitges-\d+|lead-\d+)", re.I)
 
 SHEETS_ORDEN = ["Pizzerías", "Peluquerías Sitges"]
@@ -46,9 +42,7 @@ log = logging.getLogger(__name__)
 def _load_env() -> None:
     for f in (ROOT / ".env", ROOT / "nombres.env"):
         if f.is_file():
-            load_dotenv(f)
-            return
-    load_dotenv()
+            load_dotenv(f, override=False)
 
 
 def _is_header_row(ws, row: int, sheet: str) -> bool:
@@ -60,7 +54,8 @@ def _is_header_row(ws, row: int, sheet: str) -> bool:
 
 def _row_done(ws, row: int) -> bool:
     html = str(ws.cell(row, 8).value or "")
-    if "webs/" not in html:
+    url = str(ws.cell(row, 6).value or "")
+    if "webs/" not in html or not GITHUB_RE.search(url):
         return False
     font = ws.cell(row, 2).font
     return bool(font and font.bold)
@@ -84,23 +79,19 @@ def _resolve_dist(html_cell: str | None, sheet: str, row: int) -> Path | None:
 
     if sheet == "Peluquerías Sitges":
         idx = max(1, row if row > 2 else 1)
-        cand = DIST_DIR / f"pelu-sitges-{idx}"
-        if (cand / "index.html").is_file():
-            return cand
-        cand = DIST_DIR / f"pelu-sitges-{row}"
-        if (cand / "index.html").is_file():
-            return cand
+        for name in (f"pelu-sitges-{idx}", f"pelu-sitges-{row}"):
+            cand = DIST_DIR / name
+            if (cand / "index.html").is_file():
+                return cand
 
     return None
 
 
-def _netlify_url(ws, row: int) -> str | None:
-    for col in (6, 5, 7):
-        v = str(ws.cell(row, col).value or "")
-        m = NETLIFY_RE.search(v)
-        if m:
-            return m.group(0)
-    return None
+def _set_url_cell(ws, row: int, url: str) -> None:
+    u = url.rstrip("/")
+    cell = ws.cell(row, 6, u)
+    cell.hyperlink = Hyperlink(ref=cell.coordinate, target=u, display=u)
+    cell.font = Font(bold=True, underline="single", color="0563C1")
 
 
 def _bold_row(ws, row: int) -> None:
@@ -134,18 +125,20 @@ def _collect_queue(wb) -> list[dict]:
             seen_names.add(key)
             if _row_done(ws, row):
                 continue
-            url = _netlify_url(ws, row)
-            if not url:
-                continue
             dist = _resolve_dist(ws.cell(row, 8).value, sheet, row)
             if not dist:
+                p = ROOT / str(ws.cell(row, 8).value or "")
+                if p.is_file():
+                    dist = p.parent
+                elif (p / "index.html").is_file():
+                    dist = p
+            if not dist or not (dist / "index.html").is_file():
                 log.warning("Sin HTML local: %s (%s fila %d)", name, sheet, row)
                 continue
             items.append({
                 "sheet": sheet,
                 "row": row,
                 "name": name,
-                "url": url,
                 "dist": str(dist),
                 "html_prev": ws.cell(row, 8).value,
             })
@@ -179,21 +172,16 @@ def _process_one(wb, item: dict) -> bool:
     row = item["row"]
     dist = Path(item["dist"])
     name = item["name"]
-    url = item["url"]
 
     log.info("→ [%s] %s", item["sheet"], name)
     try:
-        new_url = deploy_dist(dist, netlify_url=url)
-        check = verify_published(new_url)
-        if not check.get("ok"):
-            raise RuntimeError(check.get("message") or "Verificación API fallida")
         webs_html = save_client_web(name, dist, existing_html=item.get("html_prev"))
-        ws.cell(row, 6, check.get("ssl_url") or new_url)
+        new_url = deploy_github_pages(webs_html.parent, name)
+        _set_url_cell(ws, row, new_url)
         ws.cell(row, 8, webs_path_for_excel(webs_html))
-        ts = datetime.now().strftime("%Y-%m-%d %H:%M")
-        ws.cell(row, 9, ts)
+        ws.cell(row, 9, datetime.now().strftime("%Y-%m-%d %H:%M"))
         _bold_row(ws, row)
-        log.info("  ✓ %s | %s (%s bytes)", new_url, webs_html.parent.name, check.get("size"))
+        log.info("  ✓ %s | %s", new_url, webs_html.parent.name)
         return True
     except Exception as e:
         log.error("  ✗ %s: %s", name, e)
@@ -202,14 +190,12 @@ def _process_one(wb, item: dict) -> bool:
 
 
 def _generate_more(needed: int) -> None:
-    """Genera pizzerías nuevas hasta cubrir huecos (requiere APIs)."""
     if needed <= 0:
         return
-    log.info("Faltan %d: lanzando ampliar_leads (máx %d)…", needed, needed)
+    log.info("Faltan %d: lanzando ampliar_leads…", needed)
     import ampliar_leads_pizzerias as amp
 
     amp.MAX_NUEVOS = min(needed, 53)
-    amp.PAUSA_NETLIFY = 40
     amp.main()
 
 
@@ -233,7 +219,7 @@ def main() -> None:
         and _row_done(wb[sheet], row)
     )
     log.info(
-        "Cola: %d pendientes | Ya completados (webs+negrita): %d | Meta: %d",
+        "Cola: %d pendientes | Completados: %d | Meta: %d",
         len(queue),
         already_bold,
         META_TOTAL,
@@ -250,7 +236,7 @@ def main() -> None:
             queue = _collect_queue(wb)
             queue = [q for q in queue if f"{q['sheet']}:{q['row']}" not in done_keys]
             if not queue:
-                log.error("No hay más leads para procesar (revisa APIs o Excel).")
+                log.error("No hay más leads para procesar.")
                 break
 
         if not queue:
@@ -270,20 +256,15 @@ def main() -> None:
                 completed += 1
             wb.save(XLSX)
             _save_state(done_keys, completed)
-            if i < len(batch) - 1:
-                time.sleep(PAUSA_ENTRE_DEPLOYS)
 
         log.info("Progreso: %d / %d", completed, META_TOTAL)
 
-        if completed >= META_TOTAL or (not queue and completed >= META_TOTAL):
+        if completed >= META_TOTAL or not queue:
             break
-        if queue or completed < META_TOTAL:
-            log.info("Esperando %ds antes del siguiente lote…", PAUSA_ENTRE_LOTES)
-            time.sleep(PAUSA_ENTRE_LOTES)
 
     wb.save(XLSX)
     _save_state(done_keys, completed)
-    log.info("=== FIN: %d / %d en webs/ + negrita en Excel ===", completed, META_TOTAL)
+    log.info("=== FIN: %d / %d ===", completed, META_TOTAL)
 
 
 if __name__ == "__main__":

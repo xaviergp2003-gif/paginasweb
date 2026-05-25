@@ -213,8 +213,6 @@ def map_embed(address: str) -> str:
 
 def render_landing(*, lead: PlaceLead, copy: dict[str, Any], output_dir: Path) -> Path:
     import shutil
-    from deployer import prepare_dist
-
     if output_dir.exists():
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -267,7 +265,6 @@ def render_landing(*, lead: PlaceLead, copy: dict[str, Any], output_dir: Path) -
     )
     out = output_dir / "index.html"
     out.write_text(html, encoding="utf-8")
-    prepare_dist(output_dir)
     logger.info("Landing: %s", out)
     return out.resolve()
 
@@ -275,8 +272,6 @@ def render_landing(*, lead: PlaceLead, copy: dict[str, Any], output_dir: Path) -
 def render_peluqueria_landing(*, lead: PlaceLead, copy: dict[str, Any], output_dir: Path) -> Path:
     """Landing peluquería — plantilla peluqueria.html (estilo salón)."""
     import shutil
-    from deployer import prepare_dist
-
     if output_dir.exists():
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -330,7 +325,6 @@ def render_peluqueria_landing(*, lead: PlaceLead, copy: dict[str, Any], output_d
     )
     out = output_dir / "index.html"
     out.write_text(html, encoding="utf-8")
-    prepare_dist(output_dir)
     logger.info("Landing peluquería: %s", out)
     return out.resolve()
 
@@ -349,8 +343,6 @@ def _render_salon_style(
     wa_order_fn,
 ) -> Path:
     import shutil
-    from deployer import prepare_dist
-
     if output_dir.exists():
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -404,7 +396,6 @@ def _render_salon_style(
     )
     out = output_dir / "index.html"
     out.write_text(html, encoding="utf-8")
-    prepare_dist(output_dir)
     logger.info("Landing %s: %s", template_name, out)
     return out.resolve()
 

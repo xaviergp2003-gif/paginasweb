@@ -1,21 +1,18 @@
 """
-Regenera HTML con la plantilla actual y re-despliega las peluquerías de la hoja Excel.
-Reutiliza copy.json si existe (evita llamadas a IA).
+Regenera HTML con la plantilla actual, publica en GitHub Pages y actualiza Excel.
 """
 
 from __future__ import annotations
 
 import json
 import logging
-import re
-import time
 from pathlib import Path
 
 from dotenv import load_dotenv
 from openpyxl import load_workbook
 
 from content_ai import generate_copy_peluqueria
-from deployer import deploy_dist
+from github_pages import deploy_github_pages
 from scraper import PlaceLead, search_leads
 from templater import DIST_DIR, render_peluqueria_landing
 from webs_storage import save_client_web, webs_path_for_excel
@@ -27,9 +24,6 @@ log = logging.getLogger(__name__)
 ROOT = Path(__file__).resolve().parent
 XLSX = ROOT / "leads_generados.xlsx"
 SHEET = "Peluquerías Sitges"
-PAUSA = 22
-
-
 def _find_lead(name: str, city: str = "Sitges") -> PlaceLead | None:
     for q in (f"{name} {city}", name):
         hits = search_leads(q, max_results=5)
@@ -61,7 +55,6 @@ def main() -> None:
     updated = 0
     for row in range(2, ws.max_row + 1):
         name = ws.cell(row, 2).value
-        url = ws.cell(row, 6).value or ""
         html_path = ws.cell(row, 8).value or ""
         if not name:
             continue
@@ -90,21 +83,15 @@ def main() -> None:
             log.error("  HTML: %s", e)
             continue
 
-        if url and "netlify.app" in str(url):
-            try:
-                new_url = deploy_dist(dist, netlify_url=str(url).strip())
-                ws.cell(row, 6, new_url)
-                webs_html = save_client_web(str(name), dist, existing_html=html_path)
-                ws.cell(row, 8, webs_path_for_excel(webs_html))
-                updated += 1
-                log.info("  ✓ %s", new_url)
-            except Exception as e:
-                log.error("  Netlify: %s", e)
-        else:
-            log.info("  HTML local OK (sin URL Netlify)")
+        try:
+            webs_html = save_client_web(str(name), dist, existing_html=html_path)
+            new_url = deploy_github_pages(webs_html.parent, str(name))
+            ws.cell(row, 6, new_url.rstrip("/"))
+            ws.cell(row, 8, webs_path_for_excel(webs_html))
             updated += 1
-
-        time.sleep(PAUSA)
+            log.info("  ✓ %s", new_url)
+        except Exception as e:
+            log.error("  GitHub: %s", e)
 
     wb.save(XLSX)
     log.info("=== Regeneradas: %d ===", updated)

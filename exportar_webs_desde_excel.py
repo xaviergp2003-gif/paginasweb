@@ -1,6 +1,5 @@
 """
-Copia a webs/{cliente}/ el HTML de filas que ya tienen URL Netlify en el Excel.
-Útil para leads antiguos que solo tenían dist/.
+Copia a webs/{cliente}/ el HTML de filas del Excel (columna H o dist/).
 """
 
 from __future__ import annotations
@@ -20,7 +19,6 @@ log = logging.getLogger(__name__)
 
 ROOT = Path(__file__).resolve().parent
 XLSX = ROOT / "leads_generados.xlsx"
-NETLIFY_RE = re.compile(r"https?://[a-z0-9-]+\.netlify\.app", re.I)
 
 
 def _html_source(row_vals: list, name: str, row: int) -> Path | None:
@@ -54,6 +52,8 @@ def main() -> None:
     wb = load_workbook(XLSX)
     done = 0
     for sheet in wb.sheetnames:
+        if sheet == "Enlaces demos":
+            continue
         ws = wb[sheet]
         log.info("Hoja: %s", sheet)
         for row in range(2, ws.max_row + 1):
@@ -61,15 +61,6 @@ def main() -> None:
             if not name:
                 continue
             vals = [ws.cell(row, c).value for c in range(1, 10)]
-            url = str(vals[5] or "")
-            if not NETLIFY_RE.search(url):
-                for v in vals:
-                    m = NETLIFY_RE.search(str(v or ""))
-                    if m:
-                        url = m.group(0)
-                        break
-            if not NETLIFY_RE.search(url):
-                continue
             html_path = ws.cell(row, 8).value
             if html_path and "webs/" in str(html_path):
                 p = ROOT / str(html_path) if not Path(str(html_path)).is_absolute() else Path(str(html_path))

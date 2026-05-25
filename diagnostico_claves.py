@@ -1,17 +1,16 @@
 """
-Diagnóstico: claves API + estado real de URLs Netlify (vía API, no navegador).
+Diagnóstico: claves API + URLs GitHub Pages del Excel.
 Uso: python3 diagnostico_claves.py
 """
 
 from __future__ import annotations
 
-import re
 from pathlib import Path
 
 from dotenv import load_dotenv
 from openpyxl import load_workbook
 
-from netlify_verify import NETLIFY_RE, check_all_keys, verify_published
+from github_pages import GITHUB_RE, check_all_keys, url_responds_ok
 
 ROOT = Path(__file__).resolve().parent
 XLSX = ROOT / "leads_generados.xlsx"
@@ -20,9 +19,7 @@ XLSX = ROOT / "leads_generados.xlsx"
 def _load_env() -> None:
     for f in (ROOT / ".env", ROOT / "nombres.env"):
         if f.is_file():
-            load_dotenv(f)
-            return
-    load_dotenv()
+            load_dotenv(f, override=False)
 
 
 def main() -> None:
@@ -35,37 +32,34 @@ def main() -> None:
         print("\nNo hay Excel.")
         return
 
-    print("\n=== FILAS EN NEGRITA (verificación API) ===")
+    print("\n=== URL DEMO (columna F) ===")
     wb = load_workbook(XLSX)
-    ok = fail = 0
+    ok = fail = sin = 0
     for sheet in wb.sheetnames:
+        if sheet == "Enlaces demos":
+            continue
         ws = wb[sheet]
-        for row in range(1, ws.max_row + 1):
-            font = ws.cell(row, 2).font
-            if not (font and font.bold):
-                continue
+        for row in range(2, ws.max_row + 1):
             name = ws.cell(row, 2).value
-            url = str(ws.cell(row, 6).value or "")
-            m = NETLIFY_RE.search(url)
-            if not m:
-                print(f"  ✗ {sheet} r{row} {name}: sin URL Netlify")
-                fail += 1
+            if not name:
                 continue
-            url = f"https://{m.group(1)}.netlify.app"
-            r = verify_published(url)
-            if r.get("ok"):
+            url = str(ws.cell(row, 6).value or "").strip()
+            if not url:
+                sin += 1
+                print(f"  — {sheet} r{row} {name}: sin URL")
+                continue
+            if not GITHUB_RE.search(url):
+                fail += 1
+                print(f"  ? {name}: {url[:70]}")
+                continue
+            if url_responds_ok(url):
                 ok += 1
-                print(f"  ✓ {name} → {r['ssl_url']} ({r['size']} bytes)")
+                print(f"  ✓ {name}")
             else:
                 fail += 1
-                print(f"  ✗ {name} → {r.get('message')}")
+                print(f"  ✗ {name} (aún propagando o error): {url}")
 
-    print(f"\nResumen negrita: {ok} OK, {fail} con problema")
-    if ok and fail == 0:
-        print(
-            "\nSi en el navegador ves error pero aquí sale OK: suele ser "
-            "rate limit temporal de Netlify (429). Espera 15–30 min y recarga."
-        )
+    print(f"\nResumen: {ok} OK, {fail} problema, {sin} sin URL")
 
 
 if __name__ == "__main__":
